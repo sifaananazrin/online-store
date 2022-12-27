@@ -1,0 +1,58 @@
+<%- include('../partials/adminHeader.ejs')%>
+
+
+<div>
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content borderradius-remove">
+            <div class="modal-header d-flex justify-content-center">
+                <h5 class="modal-title" id="staticBackdropLabel">Edit Item</h5>
+            </div>
+            <div class="modal-body">
+                <form action="" method="post" id="form" enctype="multipart/form-data" name="form">
+                    <div class="form-outline">
+                        <label for="resItemName" class="form-label">Item Name</label>
+                        <input value="<%= data.item_name %>" type="text" name="item_name" class="form-control shadow-remove borderradius-remove"
+                            placeholder="Product Name" id="resItemName" aria-describedby="emailHelp">
+                    </div>
+                    <div class="form-outline">
+                      <label for="resItemName" class="form-label">Description</label>
+                      <input value="<%= data.des %>" type="text" name="des" class="form-control shadow-remove borderradius-remove"
+                          placeholder="description" id="resItemName" aria-describedby="emailHelp">
+                  </div>
+                    <br>
+                    <br>
+                    <div class="form-outline">
+                        <label for="resPrice" class="form-label">stock</label>
+                        <input value="<%= data.stock %>" type="number" name="stock" class="form-control shadow-remove borderradius-remove"
+                            placeholder="stock" id="resPrice" aria-describedby="emailHelp">
+                    </div>
+                   
+                    <br>
+                    <div class="form-outline">
+                        <label for="resPrice" class="form-label">Cost</label>
+                        <input value="<%= data.cost %>" type="text" name="price" class="form-control shadow-remove borderradius-remove"
+                            placeholder="cost" id="resPrice" aria-describedby="emailHelp">
+                    </div>
+                                    
+                    <br>
+                    <div class="form-outline">
+                        <label for="resFoodImage" class="form-label">product Image</label>
+                        <input value="<%= data.image %>" type="file" name="image"  accept="image/png, image/jpeg" class="form-control shadow-remove borderradius-remove"
+                            id="reproductImage" aria-describedby="emailHelp">
+                    </div>
+                    <br>
+                   
+            </div>
+            <div class="modal-footer d-flex justify-content-center">
+<button type="submit" 
+                    class="btn btn-info text-white borderradius-remove shadow-remove" data-bs-dismiss="modal">
+                    Create
+                </button>
+              </form>
+
+
+
+
+
+
+<%- include('../partials/footer.ejs')%>

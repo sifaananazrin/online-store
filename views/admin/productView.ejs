@@ -1,0 +1,438 @@
+<%- include('../partials/adminHeader.ejs')%>
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- CSS only -->
+    <style>
+      @import url(https://unpkg.com/@webpixels/css@1.1.5/dist/index.css);
+      /* Bootstrap Icons */
+      @import url("https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.4.0/font/bootstrap-icons.min.css");
+    </style>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi"
+      crossorigin="anonymous"
+    />
+
+    <script
+      src="https://kit.fontawesome.com/7c940f0205.js"
+      crossorigin="anonymous"
+    ></script>
+     <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css"
+    />
+   
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css">
+    <link rel="stylesheet" href="/admin/css/style.css">
+     <link
+      rel="stylesheet"
+      href="https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap5.min.css"
+    />
+   
+  </head>
+  <body>
+    <script src="	https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    
+    <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.1/js/dataTables.bootstrap5.min.js"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
+      crossorigin="anonymous"
+    ></script>
+    <script >
+
+function validateCategory(form) {
+  let category = document.getElementById("category");
+  if (category.value === "") {
+    document.getElementById("categoryError").innerHTML =
+      "please enter category";
+    category.focus();
+    return false;
+  }
+  return true;
+}
+function validateEditCategory(form) {
+  let categorys = document.getElementById("categorys");
+  if (categorys.value === "") {
+    document.getElementById("categorysError").innerHTML =
+      "please enter category";
+    categorys.focus();
+    return false;
+  }
+  return true;
+}
+
+function validateAddProduct(form) {
+  let username = document.getElementById("product");
+  let price = document.getElementById("price");
+  let description = document.getElementById("description");
+  let stock = document.getElementById("stock");
+  let file = document.getElementById("file-input");
+
+  var regex = /^[a-zA-Z\s]+$/;
+  if (username.value == "") {
+    document.getElementById("nameError").innerHTML =
+      "please enter product name";
+    username.focus();
+    return false;
+  }
+  if (regex.test(username.value) === false) {
+    document.getElementById("nameError").innerHTML =
+      "product name should not contain special characters";
+    username.focus();
+    return false;
+  }
+  if (price.value == "") {
+    document.getElementById("priceError").innerHTML = "please enter your price";
+    price.focus();
+    return false;
+  }
+  if (price.value < 0) {
+    document.getElementById("priceError").innerHTML =
+      "price must be a positive value";
+    price.focus();
+    return false;
+  }
+  if (description.value == "") {
+    document.getElementById("descriptionError").innerHTML =
+      "please enter your description";
+    description.focus();
+    return false;
+  }
+  if (stock.value == "") {
+    document.getElementById("stockError").innerHTML = "please enter stock";
+    stock.focus();
+    return false;
+  }
+  if (stock.value < 0) {
+    document.getElementById("stockError").innerHTML =
+      "stock must be a positive value";
+    stock.focus();
+    return false;
+  }
+  if (file.value == "") {
+    document.getElementById("fileError").innerHTML = "plese upload image";
+    file.focus();
+    return false;
+  }
+
+  return true;
+}
+function validateAddCoupon(form) {
+  let coupon = document.getElementById("coupon");
+  let discount = document.getElementById("discount");
+  let max = document.getElementById("max");
+  let exdate = document.getElementById("exdate");
+  if (coupon.value == "") {
+    document.getElementById("couponError").innerHTML =
+      "please enter product name";
+    coupon.focus();
+    return false;
+  }
+  if (discount.value == "") {
+    document.getElementById("discountError").innerHTML =
+      "please enter your discount";
+    discount.focus();
+    return false;
+  }
+  if (discount.value < 0) {
+    document.getElementById("discountError").innerHTML =
+      "discount must be a positive value";
+    discount.focus();
+    return false;
+  }
+  if (max.value == "") {
+    document.getElementById("maxError").innerHTML = "please enter your max";
+    max.focus();
+    return false;
+  }
+  if (max.value < 0) {
+    document.getElementById("maxError").innerHTML =
+      "max must be a positive value";
+    max.focus();
+    return false;
+  }
+  if (exdate.value == "") {
+    document.getElementById("exdateError").innerHTML = "please enter exdate";
+    exdate.focus();
+    return false;
+  }
+  if (exdate.value < 0) {
+    document.getElementById("exdateError").innerHTML =
+      "exdate must be a positive value";
+    exdate.focus();
+    return false;
+  }
+  return true;
+}
+function validateEditCoupon(form) {
+  let coupon = document.getElementById("coupon");
+  let discount = document.getElementById("discount");
+  let max = document.getElementById("max");
+  let exdate = document.getElementById("exdate");
+  if (coupon.value == "") {
+    document.getElementById("couponNameError").innerHTML =
+      "please enter coupon name";
+    coupon.focus();
+    return false;
+  }
+  if (discount.value == "") {
+    document.getElementById("discountsError").innerHTML =
+      "please enter your discount";
+    discount.focus();
+    return false;
+  }
+  if (discount.value < 0) {
+    document.getElementById("discountError").innerHTML =
+      "discount must be a positive value";
+    discount.focus();
+    return false;
+  }
+  if (max.value == "") {
+    document.getElementById("maxlError").innerHTML = "please enter your max";
+    max.focus();
+    return false;
+  }
+  if (max.value < 0) {
+    document.getElementById("maxError").innerHTML =
+      "max must be a positive value";
+    max.focus();
+    return false;
+  }
+  if (exdate.value == "") {
+    document.getElementById("expdateError").innerHTML = "please enter exdate";
+    exdate.focus();
+    return false;
+  }
+  if (exdate.value < 0) {
+    document.getElementById("exdateError").innerHTML =
+      "exdate must be a positive value";
+    exdate.focus();
+    return false;
+  }
+  return true;
+}
+function validateBanner(form) {
+  let banner = document.getElementById("banner");
+  let image = document.getElementById("image");
+  let bannerText = document.getElementById("bannertext");
+  if (banner.value == "") {
+    document.getElementById("bannerError").innerHTML =
+      "please enter banner name";
+    banner.focus();
+    return false;
+  }
+  if (image.value == "") {
+    document.getElementById("imageError").innerHTML = "please upload image";
+    image.focus();
+    return false;
+  }
+  if (bannerText.value == "") {
+    document.getElementById("bannerTextError").innerHTML =
+      "please enter your bannerText";
+    bannerText.focus();
+    return false;
+  }
+  return true;
+}
+
+    </script>
+  </body>
+</html>
+    <div class="col py-3">
+        <section>
+            <h5 class="text-uppercase text-center mb-5">Product Details</h5>
+            <div class="container h-100">
+              <div class="d-flex h-100">
+                <div class="align-self-end ml-auto">
+                  <a href="/admin/addProduct">
+                    <button
+                      type="button"
+                      class="btn btn-outline-primary text-dark"
+                    >
+                      Add Product
+                    </button>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+
+            <table
+              id="table"
+              class="table mt-5 table-hover table-light text-start align-middle table-bordered"
+            >
+              <thead>
+                
+                <tr>
+                  <th class="col-3 col-md-3 col-lg-3 col-xl-2 text-center">
+                    Sl.No
+                  </th>
+                  <th class="col-3 col-md-3 col-lg-3 col-xl-2 text-center">
+                    Product
+                  </th>
+                  <th class="col-3 col-md-3 col-lg-3 col-xl-2 text-center">
+                    Price
+                  </th>
+                  <th class="col-3 col-md-3 col-lg-3 col-xl-2 text-center">
+                    Category
+                  </th>
+                  <th class="col-3 col-md-3 col-lg-3 col-xl-2 text-center">
+                    Description
+                  </th>
+                  <th class="col-3 col-md-3 col-lg-3 col-xl-2 text-center">
+                    Stock
+                  </th>
+                  <th class="col-3 col-md-3 col-lg-3 col-xl-2 text-center">
+                    Status(del)
+                  </th>
+                  <th class="col-3 col-md-3 col-lg-3 col-xl-2 text-center">
+                    Image
+                  </th>
+                  <th class="col-3 col-md-3 col-lg-3 col-xl-2 text-center">
+                    date
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                
+                <% products.forEach((allproducts,index)=>{ %>
+                <tr>
+                  <td class="col-3 col-md-3 col-lg-3 col-xl-2 text-center">
+                    <%= index + 1 %>
+                  </td>
+                  <td
+                    class="col-3 col-md-3 col-lg-3 col-xl-2 text-center text-wrap"
+                  >
+                    <%= allproducts.item_name %>
+                  </td>
+                  <td class="col-3 col-md-3 col-lg-3 col-xl-2 text-center">
+                    <%= allproducts.price %>
+                  </td>
+                  <td class="col-3 col-md-3 col-lg-3 col-xl-2 text-center">
+                    <%= allproducts.category %>
+                  </td>
+                  <td
+                    class="col-3 col-md-3 col-lg-3 col-xl-2 text-center text-wrap"
+                  >
+                    <%= allproducts.des %>
+                  </td>
+                  <td class="col-3 col-md-3 col-lg-3 col-xl-2 text-center">
+                    <%= allproducts.stock %>
+                  </td>
+                  <td class="col-3 col-md-3 col-lg-3 col-xl-2 text-center">
+                    &nbsp; <%= allproducts.isDeleted %>
+                  </td>
+                 
+                  <td class="col-3 col-md-3 col-lg-3 col-xl-2 text-center">
+                    <img
+                      src="/<%= allproducts.image %>"
+                      alt="product image"
+                      style="width: 5rem"
+                    />
+                  </td>
+                  <td class="col-3 col-md-3 col-lg-3 col-xl-2 text-center">
+                    &nbsp; <%= allproducts.dateCreated.toDateString() %>
+                  </td>
+                  
+                  <td class="col-3 col-md-3 col-lg-3 col-xl-2 text-center">
+                
+                  </td>
+                  <td class="col-3 col-md-3 col-lg-3 col-xl-2 text-center">
+                    <a href="/admin/editProduct/<%= allproducts._id %>"
+                      ><button
+                        type="button"
+                        class="btn btn-outline-none text-dark"
+                      >
+                        <i class="bi bi-pencil-square"></i></button
+                    ></a>
+                    <button
+                      type="button"
+                      class="btn btn-outline-none text-dark"
+                      data-bs-toggle="modal"
+                      data-bs-target="#staticBackdrop-<%= allproducts._id %>"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        fill="currentColor"
+                        class="bi bi-trash3-fill"
+                        viewBox="0 0 16 16"
+                      >
+                        <path
+  d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z"
+                        />
+                      </svg>
+                    </button>
+                    <div
+                    class="modal fade"
+                    id="staticBackdrop-<%= allproducts._id %>"
+                    data-bs-backdrop="static"
+                    data-bs-keyboard="false"
+                    tabindex="-1"
+                    aria-labelledby="staticBackdropLabel"
+                    aria-hidden="true"
+                  >
+                    <div class="modal-dialog modal-dialog-centered">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="staticBackdropLabel">
+                            Delete Product
+                          </h5>
+                          <button
+                            type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Close"
+                          ></button>
+                        </div>
+                        <div class="modal-body">
+                          Want to delete <%= allproducts.product %>
+                        </div>
+                        <div class="modal-footer">
+                          <button
+                            type="button"
+                            class="btn btn-secondary"
+                            data-bs-dismiss="modal"
+                          >
+                            Close
+                          </button>
+                          <a href="/admin/deleteProduct/<%= allproducts._id %>"
+                            ><button type="submit" class="btn btn-primary">
+                              Confirm
+                            </button></a
+                          >
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  </td>
+                </tr>
+                <% }) %>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+
+  
+
+
+
+
+
+
+
+
+    <%- include('../partials/footer.ejs')%>

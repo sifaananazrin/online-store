@@ -1,0 +1,107 @@
+/*Still perfecting this shit*/
+
+@import url('https://fonts.googleapis.com/css?family=Varela+Round');
+
+body {
+  background-color: #fce4ec;
+  background-image: url("http://res.cloudinary.com/dc0hxrfd5/image/upload/v1506633763/Poop_Emoji_vklvly.png");
+  height: 95vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/*--Button Styles--*/
+.btn {
+  font-family: 'Varela Round', sans-serif;
+  font-size: 16px;
+  text-decoration: none;
+  width: 100px;
+  height: 75px;
+  background: #f06292;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  border: 0;
+  border-radius: 75px;
+  cursor: pointer;
+  transition: all 500ms cubic-bezier(0.565, -0.070, 0.140, 1.135);
+  transition-timing-function: cubic-bezier(0.565, -0.070, 0.140, 1.135);
+}
+.btn span {
+  color: transparent;
+  transition: all 100ms cubic-bezier(0.565, -0.070, 0.140, 1.135);
+  transition-timing-function: cubic-bezier(0.565, -0.070, 0.140, 1.135);
+}
+.btn:before {
+  content:'';
+  position: absolute;
+  width: 3px;
+  height: 16px;
+  background: white;
+  transform: rotate(-45deg);
+  top: 25px;
+  transition: all 500ms cubic-bezier(0.565, -0.070, 0.140, 1.135);
+  transition-timing-function: cubic-bezier(0.565, -0.070, 0.140, 1.135);
+}
+.btn:after {
+  content:'';
+  position: absolute;
+  width: 3px;
+  height: 16px;
+  background: white;
+  transform: rotate(45deg);
+  bottom: 25px;
+  transition: all 500ms cubic-bezier(0.565, -0.070, 0.140, 1.135);
+  transition-timing-function: cubic-bezier(0.565, -0.070, 0.140, 1.135);
+}
+
+/*--Button Hover Styles--*/
+.btn:hover {
+  width: 225px;
+  transition: all 500ms cubic-bezier(0.565, -0.070, 0.140, 1.135);
+  transition-timing-function: cubic-bezier(0.565, -0.070, 0.140, 1.135);
+}
+.btn:hover span {
+  color: white;
+  margin-left: -20px;
+  transition: all 500ms cubic-bezier(0.565, -0.070, 0.140, 1.135);
+  transition-timing-function: cubic-bezier(0.565, -0.070, 0.140, 1.135);
+}
+.btn:hover:before, .btn:hover:after {
+  right: 45px;
+  transition: all 500ms cubic-bezier(0.565, -0.070, 0.140, 1.135);
+  transition-timing-function: cubic-bezier(0.565, -0.070, 0.140, 1.135);
+}
+
+/*--Button Active Styles--*/
+.btn:active, .btn:focus  {
+  width: 100px;
+  background: green;
+  outline: none;
+  transition: all 500ms cubic-bezier(0.565, -0.070, 0.140, 1.135);
+  transition-timing-function: cubic-bezier(0.565, -0.070, 0.140, 1.135);
+}
+
+.btn:active span, .btn:focus span {
+  color: transparent;
+}
+
+.btn:active:before, .btn:focus:before {
+  transform: rotate(45deg);
+  top: 28px;
+  height: 25px;
+  margin: auto;
+  right: -10px;
+  left: 0;
+}
+
+.btn:active:after, .btn:focus:after {
+  height: 14px;
+  transform: rotate(-45deg);
+  margin: auto;
+  right: 0;
+  left: -17px;
+}
