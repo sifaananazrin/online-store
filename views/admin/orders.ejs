@@ -1,0 +1,364 @@
+<%- include('../partials/adminHeader.ejs')%>
+
+
+
+
+
+
+
+
+<body>
+
+
+    <div class="container col-md-10 ms-sm-auto me-lg-2 me-md-2 col-lg-10 px-md-4 mt-3">
+        <table id="tableForm" class="table">
+            <thead>
+                <tr>
+                    <th scope="col">User Name</th>
+                    <th scope="col">OrderID</th>
+                    <th scope="col">DateofOrder</th>
+                    <th scope="col">TotalAmount</th>
+                    <th scope="col">Payment Method</th>
+                    <th scope="col">Payment Status</th>
+                    <th scope="col">Order Status</th>
+                    <th scope="col">Details</th>
+                    <th scope="col">Options</th>
+                   
+                    
+                </tr>
+            </thead>
+            <tbody>
+                <% allData.forEach( order => { %>
+                    <tr>
+                        <td><%= order.userfields.full_name%></td>
+                        <td>
+                            <%= order.order_id %>
+                        </td>
+                        <td>
+                            <%= order.order_placed_on %>
+                        </td>
+                        <td>
+                           Rs.<%= order.finalAmount %>
+                        </td>
+                        <td>
+                            <%= order.paymentMethod %>
+                        </td>
+                       
+                        <td>
+                            <select name="pstatus" id="ps<%= order._id %>" class="form-select-sm" disabled>
+                              <% if (order.paymentStatus === 'Pending') { %>
+                                <option value="Paid">Paid</option>
+                                <option value="Pending" selected>Pending</option>
+                              <% } else if (order.paymentStatus === 'Paid') {%>
+                                <option value="Paid" selected>Paid</option>
+                                <option value="Pending">Pending</option>
+                              <% } else if (order.paymentStatus === 'Cancelled') {%>
+                                <option value="Cancelled">Cancelled</option>
+                                 <% } %> 
+                            </select>
+                        </td>
+                        <td>
+                            <select name="orstatus" class="form-select-sm" id="or<%= order._id %>" disabled >
+                              <% if (order.orderStatus === 'Pending') { %>
+                                <option value="Pending" selected>Pending</option>
+                                <option value="Confirmed" >Confimed</option>
+                                <option value="Shipped">Shipped</option>
+                                <option value="Delivered">Delivered</option>
+                              <% } else if (order.orderStatus === 'Confirmed') {%>
+                                <option value="Pending">Pending</option>
+                                <option value="Confirmed" selected>Confimed</option>
+                                <option value="Shipped">Shipped</option>
+                                <option value="Delivered">Delivered</option>
+                              <% } else if (order.orderStatus === 'Shipped') {%>
+                                <option value="Pending">Pending</option>
+                                <option value="Confirmed">Confimed</option>
+                                <option value="Shipped" selected>Shipped</option>
+                                <option value="Delivered">Delivered</option>
+                                <% } else if (order.orderStatus === 'Delivered') {%>
+                                  <option value="Pending">Pending</option>
+                                  <option value="Confiemed">Confimed</option>
+                                  <option value="Shipped">Shipped</option>
+                                  <option value="Delivered" selected>Delivered</option>
+                                <% } else if (order.orderStatus === 'Completed') {%>
+                                  <option value="Completed">Completed</option>
+                                <% } else if (order.orderStatus === 'Cancelled') {%>
+                                  <option value="Cancelled">Cancelled</option>
+                                <% } %> 
+                            </select>
+                        </td>
+                        <td>
+                            <div class="d-flex flex-column">
+                            <button
+                              type="button"
+                              class="btn btn-primary btn-sm"
+                              data-bs-toggle="modal"
+                              data-bs-target="#model-product-<%= order.order_id %>"
+                            >
+                              Products
+                            </button>
+                            <div
+                              class="modal fade"
+                              id="model-product-<%= order.order_id %>"
+                              tabindex="-1"
+                              aria-labelledby="product-<%= order.order_id %>Label"
+                              aria-hidden="true"
+                            >
+                                <div class="modal-dialog">
+                                  <div class="modal-content">
+                                    <div class="modal-header">
+                                      <h1
+                                        class="modal-title fs-5"
+                                        id="product-<%= order.order_id %>Label"
+                                      >
+                                        Products
+                                      </h1>
+                                      <button
+                                        type="button"
+                                        class="btn-close"
+                                        data-bs-dismiss="modal"
+                                        aria-label="Close"
+                                      ></button>
+                                    </div>
+                                    <div class="modal-body">
+                                      <div class="p-3">
+                                        <div class="d-flex flex-column justify-content-center">
+                                          <% order.product.forEach(element => { %>
+                                            <div
+                                              class="d-flex align-items-center gap-5"
+                                              style="border: 0.5px solid #d9d9d9"
+                                            >
+                                              <div>
+                                                <img
+                                                  src="<%= element.image %>"
+                                                  alt=""
+                                                  style="width: 100px; height: 100px"
+                                                />
+                                              </div>
+                                              <div>
+                                                <%= element.productName %>
+                                              </div>                                                      
+                                              <div>Total: <%= element.cost %></div>
+                                            </div>
+                                          <% }) %>
+                                          <div class="d-flex justify-content-center mt-3">
+                                            <h4>Grand Total: Rs.<%= order.finalAmount %> </h4>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                      <button
+                                        type="button"
+                                        class="btn btn-secondary"
+                                        data-bs-dismiss="modal"
+                                      >
+                                        Close
+                                      </button>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <button type="button" class="btn btn-primary btn-sm mt-1" data-bs-toggle="modal" data-bs-target="#address-<%= order.order_id %>">
+                                Address
+                              </button>
+                              
+                              <!-- Modal -->
+                              <div class="modal fade" id="address-<%= order.order_id %>" tabindex="-1" aria-labelledby="address-<%= order.order_id %>Label" aria-hidden="true">
+                                <div class="modal-dialog">
+                                  <div class="modal-content">
+                                    <div class="modal-header">
+                                      <h1 class="modal-title fs-5" id="address-<%= order.order_id %>Label">Address</h1>
+                                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body p-3">
+                                      <% order.userAddress.forEach(element => { %>
+                                       <address>
+                                        <b><%= order.userfields.full_name %></b><br>
+                                        <%= element.address %>, <br>
+                                        <%= element.city %>, <%= element.state %>,<br>
+                                        India,<br>
+                                        <%= element.pincode %> <br>
+                                        Phone:<%= order.userfields.phone %> 
+                                       </address>
+                                      <% }) %>
+                                    </div>
+                                    <div class="modal-footer">
+                                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </td>
+                          <td>
+                            <% if (order.orderStatus != 'Completed') { %>
+                              <% if (order.orderStatus != 'Cancelled') { %>
+                                <div class="d-flex flex-column align-items-center">
+                                  <!-- <%= order.orderStatus != 'Cancelled' %>  -->
+                                  <button class="btn btn-danger btn-sm" id="ed<%= order._id %>" onclick="enable('<%= order._id %>')">
+                                      <i class="material-symbols-outlined">edit</i>
+                                  </button>
+                                  <button class="btn btn-danger btn-sm" onclick="done('<%= order._id %>')" style="display: none;" id="ch<%= order._id %>">
+                                      <i class="material-symbols-outlined">
+                                          check
+                                          </i>
+                                  </button>
+                              <% } %>
+                            <% } %>
+                            <% if (order.orderStatus == 'Pending') { %>
+                              <button type="button" class="btn btn-danger btn-sm mt-1" data-bs-toggle="modal" data-bs-target="#model-del-<%= order.order_id %>">
+                                Cancel
+                              </button>
+                              <div class="modal fade" id="model-del-<%= order.order_id %>" tabindex="-1" aria-labelledby="model-del-<%= order.order_id %>Label" aria-hidden="true">
+                                <div class="modal-dialog">
+                                  <div class="modal-content">
+                                    <div class="modal-header">
+                                      <h1 class="modal-title fs-5" id="model-del-<%= order.order_id %>Label">Order Completed</h1>
+                                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                      Are you certain you want to cancel this order?
+                                    </div>
+                                    <div class="modal-footer">
+                                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                                      <button type="button" class="btn btn-primary" onclick="cancel('<%= order._id %>')">Yes</button>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            <% } %>
+                              <% if (order.paymentStatus == 'Paid' && order.orderStatus == 'Delivered') { %>
+                                <button type="button" class="btn btn-danger btn-sm mt-1" data-bs-toggle="modal" data-bs-target="#model-com-<%= order.order_id %>">
+                                  Completed
+                                </button>
+                              <% } %>
+                              <div class="modal fade" id="model-com-<%= order.order_id %>" tabindex="-1" aria-labelledby="model-com-<%= order.order_id %>Label" aria-hidden="true">
+                                <div class="modal-dialog">
+                                  <div class="modal-content">
+                                    <div class="modal-header">
+                                      <h1 class="modal-title fs-5" id="model-com-<%= order.order_id %>Label">Order Completed</h1>
+                                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                      Are you certain the order has been completed? (Once an order has been completed, no further changes can be made.)
+                                    </div>
+                                    <div class="modal-footer">
+                                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                                      <button type="button" class="btn btn-primary" onclick="complete('<%= order._id %>')">Yes</button>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                          </div>
+                          </td>                              
+                        
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+        <table>
+            <tbody>
+                <!-- <td><a href="/admin/addProduct" class="btn btn-success">Add Product</a></td> -->
+            </tbody>
+        </table>
+    </div>
+    <script>
+        $("#menu-btn").click(function () {
+          $("#menu").toggleClass("active");
+        });
+        $(document).ready(function () {
+        $('#ptable').DataTable();
+        });
+        function enable(id) {
+            document.getElementById("ps"+id).disabled=false;
+            document.getElementById("or"+id).disabled=false;
+            document.getElementById("ed"+id).style.display='none';
+            document.getElementById("ch"+id).style.display='block';
+        }
+        function done(id) {
+            document.getElementById("ps"+id ).disabled=true;
+            document.getElementById("or"+id ).disabled=true;
+            document.getElementById("ed"+id).style.display='block';
+            document.getElementById("ch"+id).style.display='none';
+            const paymentstat = document.getElementById("ps"+id ).value;
+            const orderstat = document.getElementById("or"+id ).value;
+            $.ajax({
+              url: '/admin/changeStatus',
+              data: {
+                  orderID: id,
+                  paymentStatus: paymentstat,
+                  orderStatus: orderstat,
+              },
+              method: 'post',
+              success: () => {
+                  // document.getElementById('quantity').innerHTML = Number(qty) + Number(count);
+                  location.reload();
+              },
+          });
+        }
+        function complete(id) {
+          $.ajax({
+              url: '/admin/orderCompleted',
+              data: {
+                  orderID: id,
+              },
+              method: 'post',
+              success: () => {
+                  // document.getElementById('quantity').innerHTML = Number(qty) + Number(count);
+                  location.reload();
+              },
+          });
+        }
+        function cancel(id) {
+          $.ajax({
+              url: '/admin/orderCancel',
+              data: {
+                  orderID: id,
+              },
+              method: 'post',
+              success: () => {
+                  // document.getElementById('quantity').innerHTML = Number(qty) + Number(count);
+                  location.reload();
+              },
+          });
+        }
+      </script>
+      <style>
+        #menu .items li:nth-child(5) {
+          border-left: 4px solid #fff;
+        }
+      </style>
+   
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#tableForm').DataTable();
+        });
+    </script>
+    <!-- Section: Design Block -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+        integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js"
+        integrity="sha384-IDwe1+LCz02ROU9k972gdyvl+AESN10+x7tBKgc9I5HFtuNz0wWnPclzo6p9vxnk"
+        crossorigin="anonymous"></script>
+</div>
+   
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<%- include('../partials/footer.ejs')%>

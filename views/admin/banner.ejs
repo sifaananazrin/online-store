@@ -1,0 +1,72 @@
+
+<%- include('../partials/adminHeader.ejs')%>
+
+<div class="col py-3">
+  <section>
+    <h5 class="text-uppercase text-center mb-5 text-dark">BANNER </h5>
+    <div class="container mt-5 table-responsive">
+      <table
+        id="table"
+        class="table mt-5 table-hover table-light text-start align-middle table-bordered"
+      >
+        <thead>
+          <tr>
+            <div class="container h-100">
+              <div class="d-flex h-100">
+                <div class="align-self-end ml-auto">
+                  <a href="/admin/addBanner">
+                    <button
+                      type="button"
+                      class="btn btn-dark text-white"
+                    >
+                    Add Banner
+                    </button>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <th class="col-3 col-md-3 col-lg-3 col-xl-2 text-center">Name</th>
+            <th class="col-3 col-md-3 col-lg-3 col-xl-2 text-center">
+              description
+            </th>
+            <th class="col-3 col-md-3 col-lg-3 col-xl-2 text-center">
+            </th>
+            <th class="col-3 col-md-3 col-lg-3 col-xl-2 text-center">
+                image
+</th>
+           
+          </tr>
+        </thead>
+
+        <tbody>
+            <% banner.forEach( ban => {  %>
+          <tr>
+                    
+            <td class="col-3 col-md-3 col-lg-3 col-xl-2 text-center text-wrap">
+                <%= ban.name %>         </td>
+            <td class="col-3 col-md-3 col-lg-3 col-xl-2 text-center">
+              <%= ban.description %>
+            </td>
+            <td class="col-3 col-md-3 col-lg-3 col-xl-2 text-center">
+                <img class="pro-img" style="width: 300px;" src="/<%= ban.image %> " alt="">
+            </td>
+
+             <td class="align-middle">
+              <a href="/admin/deleteBanner/<%= ban._id %>" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
+                Delect
+              </a>
+            </td>
+                  </div>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</div>
+
+<%- include('../partials/footer.ejs')%>

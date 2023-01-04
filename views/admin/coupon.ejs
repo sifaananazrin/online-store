@@ -1,0 +1,78 @@
+
+<%- include('../partials/adminHeader.ejs')%>
+<div class="card-header pb-0">
+
+<div class="text-right ">
+  <a class="btn btn-dark w-5" href="/admin/addCoupon" role="button">Add Coupon</a>
+</div>
+
+</div>
+
+ <form action="" method="post"><div class="input-group">
+  <div class="form-outline ml-3">
+    <input type="search" id="form1" class="form-control" placeholder="search" />
+  </div>
+  <button type="submit" class="btn btn-dark ">
+    <i class="fas fa-search"></i>
+  </button>
+</div>
+  </form> 
+ 
+
+
+<table class="table m-5">
+  </thead>
+  <% allData.forEach(data =>{  %>
+
+  <tbody>
+    <tr>
+      <th scope="col">Coupon</th>
+      <th scope="col">Offer (in %)</th>
+      <th scope="col">Max Amount (in Rs.)</th>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        <div class="d-flex px-2 py-1">
+          <div>
+            <!-- <img src="/img/team-2.jpg" class="avatar avatar-sm me-3" alt="user1"> -->
+          </div>
+          <div class="d-flex flex-column justify-content-center">
+            <h6 class="mb-0 text-sm"><%= data.coupon_code %></h6>
+            <!-- <p class="text-xs text-secondary mb-0">john@creative-tim.com</p> -->
+          </div>
+        </div>
+      </td>
+      <td>
+        <p class="text-xs font-weight-bold mb-0"><%= data.offer  %></p>
+        <!-- <p class="text-xs text-secondary mb-0">Organization</p> -->
+      </td>
+      <td>
+          <p class="text-xs font-weight-bold mb-0"><%= data.max_amount   %></p>
+          <!-- <p class="text-xs text-secondary mb-0">Organization</p> -->
+        </td>
+     
+      <td class="align-middle text-center">
+        <!-- <span class="text-secondary text-xs font-weight-bold">23/04/18</span> -->
+      </td>
+      <!-- <td class="align-middle">
+        <a href="/admin/editCategory/<%= data._id %>" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
+          Edit
+        </a>
+      </td> -->
+      <td class="align-middle pr-5">
+        <a   href="/admin/deleteCoupon/<%= data._id %>" class="text-secondary font-weight-bold text-xxs" data-toggle="tooltip" data-original-title="Edit user">
+          <i class="fa-solid fa-trash-can"></i>
+        </a>
+      </td>
+  
+           </tr>
+  
+   
+</tbody>
+
+<%})%>
+      </table>
+      <%- include('../partials/footer.ejs')%>

@@ -1,43 +1,64 @@
-const mongoose = require("mongoose");
-const orderSchema = new mongoose.Schema({
-  userId: {
-    type: mongoose.SchemaTypes.ObjectId,
-    ref: "users",
+const mongoose = require('mongoose');
+
+const { Schema } = mongoose;
+const { ObjectId } = Schema;
+const orderSchema = new Schema({
+  order_id: {
+    type: String,
+    unique: true,
+    required: true,
   },
-  payment_order_id: {
-    type: String
-  },  
-  items: [
+  user_id: {
+    type: ObjectId,
+    required: true,
+  },
+  address: {
+    type: ObjectId,
+    required: true,
+  },
+  products: [
     {
       productId: {
-        type: mongoose.SchemaTypes.ObjectId,
-        ref: "products",
+        type: ObjectId,
+        required: true,
+        ref: 'products',
       },
       quantity: {
         type: Number,
-        default: 1,
+        required: true,
       },
     },
   ],
-  address: {
-    address_line_1: String,
-    address_line_2: String,
-    landmark: String,
-    town: String,
-    state: String,
-    pin_code: String,
-  },
-  payment_method: String,
-  amount: {
-    type: Number, default : 0
-  },
-  date: {
-    type: Date,
-    default: new Date()
-  },
-  status: {
+  expectedDelivery: {
     type: String,
-    default: "pending",
-  }
-});
-module.exports = mongoose.model("orders", orderSchema)
+    required: true,
+  },
+  finalAmount: {
+    type: Number,
+    required: true,
+  },
+  totalAmount: {
+    type: Number,
+    required: true,
+  },
+  paymentMethod: {
+    type: String,
+    required: true,
+  },
+  paymentStatus: {
+    type: String,
+    default: 'Pending',
+  },
+  orderStatus: {
+    type: String,
+    default: 'Pending',
+  },
+  order_placed_on: {
+    type: String,
+    required: true,
+  },
+
+}, { timestamps: true });
+
+const Orders = mongoose.model('order', orderSchema);
+module.exports = Orders;

@@ -1,0 +1,78 @@
+<%- include('../partials/adminHeader.ejs')%>
+
+
+              
+<div class="col py-3">
+    <section>
+      <div class="mask d-flex align-items-center h-100 gradient-custom-3">
+        <div class="container h-100">
+          <div
+            class="row d-flex justify-content-center align-items-center h-100"
+          >
+            <div class="col-12 col-md-9 col-lg-7 col-xl-6">
+              <div class="card" style="border-radius: 15px">
+                <div class="card-body p-5">
+                  <h5 class="text-uppercase text-center mb-5">Add Banner</h5>
+
+                  <form
+                    action=""
+                    method="post"
+                    enctype="multipart/form-data"
+                    onsubmit="return validateAddProduct(this);"
+                  >
+                    <div class="form-outline mb-4">
+                      <label class="form-label" for="form3Example1cg"
+                        ></label
+                      >
+                      <input
+                        type="text"
+                        id="product"
+                        name="name"
+                        class="form-control form-control-lg"
+                        placeholder="Banner"
+                      />
+                      <p id="nameError" style="color: red"></p>
+                    </div>
+
+                    <div class="form-outline mb-4">
+                      <label class="form-label" for="form3Example3cg"
+                        ></label
+                      >
+                      <input
+                        type="num"
+                        id="des"
+                        name="des"
+                        class="form-control form-control-lg"
+                        placeholder="Description"
+                      />
+                      <p id="priceError" style="color: red"></p>
+                    </div>
+                    <div class="form-outline mb-4">
+                        <label class="form-label" for="customFile"
+                          ></label
+                        >
+                        <input
+                        type="file"
+                        id="image"
+                        name="image"
+                        class="form-control"
+                        required
+
+                        placeholder="Choose image"
+                        multiple
+                        />
+                      </div>
+                    
+                    <div class="d-flex justify-content-center">
+                        <button
+                          type="submit"
+                          value="submit"
+                          class="btn text-white"
+                          style="background-color: #2241a7"
+                        >
+                          Add Banner
+                        </button>
+                      </div>
+                      </form>
+     
+<%- include('../partials/footer.ejs')%>

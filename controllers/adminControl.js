@@ -1,8 +1,11 @@
 /* eslint-disable no-console */
+const moment = require('moment');
 const Users = require('../models/signupModel');
 const Categories = require('../models/categories');
 const Products = require('../models/products');
-const cart = require("../models/carts");
+const Orders = require('../models/orders');
+const Coupons = require('../models/coupon');
+const Banners=require('../models/banner');
 
 
 require('dotenv/config');
@@ -12,16 +15,42 @@ let message = '';
 
 
 
-
-
-const adminHomeRender = (req, res) => {
-  const { session } = req;
-  if (session.userid && session.account_type === 'admin') {
-    res.render('admin/adminHome');
-  } else {
-    res.redirect('/admin/login');
+const adminHomeRender = async (req, res) => {
+  try {
+   
+    const userCount = await Users.countDocuments({});
+    const productCount = await Products.countDocuments({});
+    const orderData = await Orders.find({ orderStatus: { $ne: 'Cancelled' } });
+    const orderCount = await Orders.countDocuments({});
+    const pendingOrder = await Orders.find({ orderStatus: 'Pending' }).count();
+    const completed = await Orders.find({ orderStatus: 'Completed' }).count();
+    const delivered = await Orders.find({ orderStatus: 'Delivered' }).count();
+    const cancelled = await Orders.find({ orderStatus: 'Cancelled' }).count();
+    const cod = await Orders.find({ paymentMethod: 'cod' }).count();
+    const online = await Orders.find({ paymentMethod: 'online' }).count();
+ 
+    const totalAmount = orderData.reduce((accumulator, object) => {
+    
+      return (accumulator += object.totalAmount);
+    }, 0);
+    res.render('admin/adminHome', {
+      usercount: userCount,
+      productcount: productCount,
+      totalamount: totalAmount,
+      ordercount: orderCount,
+      pending: pendingOrder,
+      completed,
+      delivered,
+      cancelled,
+      cod,
+      online,
+    });
+  } catch (error) {
+    res.redirect('/500');
   }
 };
+
+
 
 const adminLoginRender = (req, res) => {
   const { session } = req;
@@ -68,7 +97,7 @@ const admin_edit_user = (req, res) => {
         const data = result;
         res.render("admin/editUser", { data });
       })
-      .catch((err) => {
+      .catch((err) => {y
         console.log(err);
       });
   } else {
@@ -334,6 +363,305 @@ const getDeleteProduct = async (req, res) => {
 };
 
 
+const getOrders = (req, res) => {
+  try {
+    Orders.aggregate([
+      {
+        $lookup: {
+          from: 'products',
+          localField: 'products.productId',
+          foreignField: '_id',
+          as: 'product',
+        },
+      },
+      {
+        $lookup: {
+          from: 'logins',
+          localField: 'user_id',
+          foreignField: '_id',
+          as: 'userfields',
+        },
+      },
+      {
+        $lookup: {
+          from: 'addresses',
+          localField: 'address',
+          foreignField: '_id',
+          as: 'userAddress',
+        },
+      },
+      {
+        $unwind: '$userfields',
+      },
+    ]).then((result) => {
+      console.log(result);
+      res.render('admin/orders', { allData: result });
+    });
+  } catch (error) {
+    res.redirect('/500');
+  }
+};
+
+
+const changeOrderStatus = (req, res) => {
+  try {
+    const { orderID, paymentStatus, orderStatus } = req.body;
+    Orders.updateOne(
+      { _id: orderID },
+      {
+        paymentStatus, orderStatus,
+      },
+    ).then(() => {
+      res.send('success');
+    }).catch(() => {
+      res.redirect('/500');
+    });
+  } catch (error) {
+    res.redirect('/500');
+  }
+};
+
+const orderCompeleted = (req, res) => {
+  try {
+    const { orderID } = req.body;
+    Orders.updateOne(
+      { _id: orderID },
+      { orderStatus: 'Completed' },
+    ).then(() => {
+      res.send('done');
+    });
+  } catch (error) {
+    res.redirect('/500');
+  }
+};
+
+const orderCancel = (req, res) => {
+  try {
+    const { orderID } = req.body;
+    Orders.updateOne(
+      { _id: orderID },
+      { orderStatus: 'Cancelled', paymentStatus: 'Cancelled' },
+    ).then(() => {
+      res.send('done');
+    });
+  } catch (error) {
+    res.redirect('/500');
+  }
+};
+
+
+const getSalesReport = async (req, res) => {
+  try {
+    const today = moment().startOf('day');
+    const endtoday = moment().endOf('day');
+    const monthstart = moment().startOf('month');
+    const monthend = moment().endOf('month');
+    const yearstart = moment().startOf('year');
+    const yearend = moment().endOf('year');
+    const daliyReport = await Orders.aggregate([
+      {
+        $match: {
+          createdAt: {
+            $gte: today.toDate(),
+            $lte: endtoday.toDate(),
+          },
+        },
+      },
+      {
+        $lookup:
+              {
+                from: 'logins',
+                localField: 'user_id',
+                foreignField: '_id',
+                as: 'user',
+              },
+      },
+
+      {
+        $project: {
+          order_id: 1,
+          user: 1,
+          paymentStatus: 1,
+          finalAmount: 1,
+          orderStatus: 1,
+        },
+      },
+      {
+        $unwind: '$user',
+      },
+    ]);
+    console.log(daliyReport);
+    const monthReport = await Orders.aggregate([
+      {
+        $match: {
+          createdAt: {
+            $gte: monthstart.toDate(),
+            $lte: monthend.toDate(),
+          },
+        },
+      },
+      {
+        $lookup:
+              {
+                from: 'logins',
+                localField: 'user_id',
+                foreignField: '_id',
+                as: 'user',
+              },
+      },
+
+      {
+        $project: {
+          order_id: 1,
+          user: 1,
+          paymentStatus: 1,
+          finalAmount: 1,
+          orderStatus: 1,
+        },
+      },
+      {
+        $unwind: '$user',
+      },
+    ]);
+    const yearReport = await Orders.aggregate([
+      {
+        $match: {
+          createdAt: {
+            $gte: yearstart.toDate(),
+            $lte: yearend.toDate(),
+          },
+        },
+      },
+      {
+        $lookup:
+              {
+                from: 'logins',
+                localField: 'user_id',
+                foreignField: '_id',
+                as: 'user',
+              },
+      },
+      {
+        $project: {
+          order_id: 1,
+          user: 1,
+          paymentStatus: 1,
+          totalAmount: 1,
+          orderStatus: 1,
+        },
+      },
+      {
+        $unwind: '$user',
+      },
+    ]);
+    res.render('admin/salesReport', { today: daliyReport, month: monthReport, year: yearReport });
+  } catch (error) {
+    res.redirect('/500');
+  }
+};
+
+
+const getCoupon = async (req, res) => {
+  try {
+    const coupons = await Coupons.find();
+    res.render('admin/coupon', { allData: coupons });
+  } catch (error) {
+    res.redirect('/500');
+  }
+};
+
+const getAddCoupon = (req, res) => {
+  try {
+    res.render('admin/addCoupon');
+  } catch (error) {
+    console.log(error);
+    res.redirect('/500');
+  }
+};
+
+const postAddCoupon = async (req, res) => {
+  try {
+    const { code, offer, amount } = req.body;
+    const already = await Coupons.find({ coupon_code: code });
+    if (already.length !== 0) {
+      
+      res.redirect('/admin/addCoupon');
+    } else {
+      // eslint-disable-next-line prefer-destructuring
+      const Coupon = Coupons;
+      const coupon = new Coupon({
+        coupon_code: code,
+        offer,
+        max_amount: amount,
+      });
+      await coupon.save();
+      res.redirect('/admin/coupon');
+    }
+  } catch (error) {
+    res.redirect('/500');
+  }
+};
+
+const getDeleteCoupon = (req, res) => {
+  try {
+    Coupons.findOneAndDelete({ _id: req.params.id })
+      .then(() => {
+        res.redirect('/admin/coupon');
+      }).catch(() => {
+        res.redirect('/500');
+      });
+  } catch (error) {
+    res.redirect('/500');
+  }
+};
+const getBanner = async (req, res) => {
+  try {
+    const banner = await Banners.find();
+    res.render('admin/banner', { banner });
+  } catch (error) {
+    res.redirect('/500');
+  }
+};
+
+const getAddBanner = (req, res) => {
+  res.render('admin/addBanner');
+};
+
+const postAddBanner = async (req, res) => {
+  try {
+    const IMAGE_PATH = (req.file.path).slice(7)
+    const Banner = new Banners({
+      name: req.body.name,
+      description: req.body.des,
+      image:IMAGE_PATH,
+    });
+      const bannerData = await Banner.save();
+    if (bannerData) {
+      res.redirect('/admin/banner');
+    } else {
+      res.render('admin/addBanner');
+    }
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+
+
+const getDeleteBanner = async (req, res) => {
+  try {
+    const { id } = req.params;
+    console.log(id);
+    await Banners.deleteOne({ _id: id }).then(() => {
+      res.redirect('/admin/banner');
+    });
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+
+
 module.exports = {
   adminHomeRender,
   adminLoginRender,
@@ -355,5 +683,18 @@ module.exports = {
   getEditProduct,
   postEditProduct,
   getDeleteProduct,
+  getOrders,
   logout,
+  changeOrderStatus,
+  orderCancel,
+  orderCompeleted,
+  getSalesReport,
+  getCoupon,
+  getAddCoupon,
+  postAddCoupon,
+  getDeleteCoupon,
+  getBanner,
+  getAddBanner,
+  postAddBanner,
+  getDeleteBanner,
 };

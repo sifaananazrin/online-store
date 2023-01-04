@@ -16,7 +16,7 @@
                   <a href="/admin/addCategory">
                     <button
                       type="button"
-                      class="btn btn-outline-primary text-dark"
+                      class="btn btn-dark text-white"
                     >
                       Add Category
                     </button>
@@ -32,6 +32,10 @@
             <th class="col-3 col-md-3 col-lg-3 col-xl-2 text-center">
               description
             </th>
+            <th class="col-3 col-md-3 col-lg-3 col-xl-2 text-center">
+          
+</th>
+           
           </tr>
         </thead>
 
@@ -53,9 +57,10 @@
                 Edit
               </a>
             </td> -->
-            <td class="align-middle">
+            <td class="align-middle pl-5">
               <a href="/admin/deleteCategory/<%= categories._id %>" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
-                remove
+                <i class="fa-solid fa-trash-can"></i>
+
               </a>
             </td>
                   </div>
@@ -71,3 +76,5 @@
 </div>
 
 <%- include('../partials/footer.ejs')%>
+
+

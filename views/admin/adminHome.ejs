@@ -8,7 +8,6 @@
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
-                        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"></a>
                     </div>
 
                     <!-- Content Row -->
@@ -22,7 +21,7 @@
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                                 Total Users</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">10</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800"> <%= usercount %></div>
                                         </div>
                                         <div class="col-auto">
                                             <i class="fa-regular fa-cart-shopping"></i>                                       </div>
@@ -40,7 +39,7 @@
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                                                 Total product</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">25</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800"> <%= productcount %></div>
                                         </div>
                                         <div class="col-auto">
                                             <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
@@ -61,7 +60,7 @@
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
                                                 Total Oders</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800"> <%= ordercount %></div>
                                         </div>
                                         <div class="col-auto">
                                             <i class="fas fa-comments fa-2x text-gray-300"></i>
@@ -74,12 +73,74 @@
 
                     <!-- Content Row -->
 
-                    <div class="row">
-
-                        <!-- Area Chart -->
-                        
-
-            </div>
+                    <div class="row gap-2 justify-content-center p-2">
+                        <div class="col-md-7 mt-5 gbg" style="border-radius: 5px">
+                          <canvas id="ordersStatusChart" class="h-100"> </canvas>
+                        </div>
+                        <div class="col-md-4 mt-5 gbg" style="border-radius: 5px">
+                          <canvas id="Paystatus" class=""> </canvas>
+                        </div>
+                      </div>
+                    </div>
+                    <input type="hidden" id="pending" value="<%= pending %>" />
+                    <input type="hidden" id="completed" value="<%= completed %>" />
+                    <input type="hidden" id="delivered" value="<%= delivered %>" />
+                    <input type="hidden" id="cancelled" value="<%= cancelled %>" />
+                    <input type="hidden" id="cod" value="<%= cod %>" />
+                    <input type="hidden" id="online" value="<%= online %>" />
+                  </section>
+                  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+                  <script>
+                    const ctx = document.getElementById("ordersStatusChart");
+                    const ctx1 = document.getElementById("Paystatus");
+                    const pending = Number(document.getElementById("pending").value);
+                    const completed = Number(document.getElementById("completed").value);
+                    const delivered = Number(document.getElementById("delivered").value);
+                    const cancelled = Number(document.getElementById("cancelled").value);
+                    const cod = Number(document.getElementById("cod").value);
+                    const online = Number(document.getElementById("online").value);
+                    new Chart(ctx, {
+                      type: "bar",
+                      data: {
+                        labels: ["Pending", "Delivered", "Cancelled", "Completed"],
+                        datasets: [
+                          {
+                            label: "No .of Orders",
+                            data: [pending, delivered, cancelled, completed],
+                            borderWidth: 2,
+                            backgroundColor: ["#6698FF" , "#6698FF", "#6698FF", "#6698FF"],
+                          },
+                        ],
+                      },
+                      options: {
+                        scales: {
+                          y: {
+                            beginAtZero: true,
+                          },
+                        },
+                      },
+                    });
+                    new Chart(ctx1, {
+                      type: "pie",
+                      data: {
+                        labels: ["COD", "Online"],
+                        datasets: [
+                          {
+                            label: "No .of Orders",
+                            data: [cod, online],
+                            borderWidth: 2,
+                            backgroundColor: ["#98AFC7", "#6698FF"],
+                          },
+                        ],
+                      },
+                      options: {},
+                    });
+                  </script>
+                    
+                    
+                  </main>
+                </div>
+              </div>
             <!-- End of Main Content -->
 
             

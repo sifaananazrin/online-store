@@ -10,8 +10,10 @@
     <meta name="author" content="">
 
     <title> Dashboard</title>
-
+  
     <!-- Custom fonts for this template-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
@@ -60,11 +62,18 @@
 
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+                <a class="nav-link collapsed" href="/admin/home" data-toggle="collapse" data-target="#collapseTwo"
                     aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fa-sharp fa-solid fa-house-user"></i>                    
                     <span>Home</span>
                 </a>
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="/admin/banner" data-toggle="collapse" data-target="#collapseTwo"
+                        aria-expanded="true" aria-controls="collapseTwo">
+                        <i class="fa-sharp fa-solid fa-house-user"></i>                    
+                        <span>Banner</span>
+                    </a>
+                
                 <li class="nav-item">
                     <a class="nav-link collapsed" href="/admin/products" data-toggle="collapse" data-target="#collapseTwo"
                         aria-expanded="true" aria-controls="collapseTwo">
@@ -78,7 +87,7 @@
                             <span>Users</span>
                         </a>
                         <li class="nav-item">
-                            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+                            <a class="nav-link collapsed" href="/admin/salesReport" data-toggle="collapse" data-target="#collapseTwo"
                                 aria-expanded="true" aria-controls="collapseTwo">
                                 <i class="fa-sharp fa-solid fa-cash-register"></i>                                
                                 <span>salesreport</span>
@@ -89,6 +98,20 @@
                                     <i class="fa-sharp fa-solid fa-cash-register"></i>                                
                                     <span>Category</span>
                                 </a>
+                                <li class="nav-item">
+                                    <a class="nav-link collapsed" href="/admin/orders" data-toggle="collapse" data-target="#collapseTwo"
+                                        aria-expanded="true" aria-controls="collapseTwo">
+                                        <i class="fa-sharp fa-solid fa-cash-register"></i>                                
+                                        <span>oders</span>
+                                    </a>
+                                    <li class="nav-item">
+                                        <a class="nav-link collapsed" href="/admin/coupon" data-toggle="collapse" data-target="#collapseTwo"
+                                            aria-expanded="true" aria-controls="collapseTwo">
+                                            <i class="fa-regular fa-tag"></i>                                           
+                                             <span>coupon</span>
+                                        </a>
+                        
+                    
                 
             
                             
@@ -298,13 +321,6 @@
                         <div class="topbar-divider d-none d-sm-block"></div>
 
                         <!-- Nav Item - User Information -->
-                        <li class="nav-item dropdown no-arrow">
-                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Douglas McGee</span>
-                                <img class="img-profile rounded-circle"
-                                    src="img/undraw_profile.svg">
-                            </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">

@@ -39,5 +39,27 @@ router.get('/products', verifyLogin.adminSession,controller.getAdminProducts);
 router.route('/addProduct').get(verifyLogin.adminSession,controller.getAddProduct).post( verifyLogin.adminSession,upload.single("image"),controller.postAddProduct);
 router.route('/editProduct/:id').get(verifyLogin.adminSession,controller.getEditProduct).post(verifyLogin.adminSession, upload.single("image"),controller.postEditProduct);
 router.get('/deleteProduct/:id', verifyLogin.adminSession,controller.getDeleteProduct);
+router.get('/orders', verifyLogin.adminSession, controller.getOrders);
+router.post('/changeStatus', verifyLogin.adminSession, controller.changeOrderStatus);
+router.post('/orderCompleted', verifyLogin.adminSession, controller.orderCompeleted);
+router.post('/orderCancel', verifyLogin.adminSession, controller.orderCancel);
+router.get('/coupon', verifyLogin.adminSession, controller.getCoupon);
+router.get('/addCoupon', verifyLogin.adminSession, controller.getAddCoupon);
+router.post('/addCoupon', verifyLogin.adminSession, controller.postAddCoupon);
+router.get('/deleteCoupon/:id', verifyLogin.adminSession, controller.getDeleteCoupon);
+router.get('/salesReport', verifyLogin.adminSession, controller.getSalesReport);
+
+
+router.get('/banner', verifyLogin.adminSession, controller.getBanner);
+router.get('/addBanner', verifyLogin.adminSession, controller.getAddBanner);
+router.post('/addBanner', upload.single("image"), verifyLogin.adminSession, controller.postAddBanner);
+router.get('/deleteBanner/:id', verifyLogin.adminSession, controller.getDeleteBanner);
+
+
+// router.get('/coupon', verifyLogin.adminSession, controller.getCoupon);
+// router.get('/addCoupon', verifyLogin.adminSession, controller.getAddCoupon);
+// router.post('/addCoupon', verifyLogin.adminSession, controller.postAddCoupon);
+// router.get('/deleteCoupon/:id', verifyLogin.adminSession, controller.getDeleteCoupon);
+// router.get('/salesReport', verifyLogin.adminSession, controller.getSalesReport);
 
 module.exports = router;

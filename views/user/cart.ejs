@@ -78,10 +78,9 @@
                           <
                           (cartData.productDetail.stock-cartData.productDetail.soldCount))
                           {
-                          %
-                        >
+                          %>
                           onclick="changeQuantity('<%= cartData._id %>','<%=
-                          cartData.productDetail._id %>',1)" <% } %>>+
+                          cartData.productDetail._id %>',1) <% } %>">+
                         </button>
                       </div>
 
@@ -89,7 +88,8 @@
                         class="col-md-3 col-lg-2 col-xl-2 offset-lg-1 d-flex justify-content-center my-2"
                       >
                         <h6 class="mb-0">
-                          Rs. <%=cartData.productDetail.cost%>
+                          
+                          Rs. <%=cartData.productDetail.price%>
                         </h6>
                       </div>
                       <div
@@ -133,6 +133,8 @@
                     <% cart.forEach((cartData)=>{ %>
                     <div class="d-flex justify-content-between mb-4">
                       <p><%= cartData.productDetail.productName%></p>
+                      <h5 class="text-uppercase">Price</h5>
+
                       <p id="price">Rs.<%=cartData.productPrice %></p>
                     </div>
                     <% }) %>
@@ -224,5 +226,6 @@
     integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
     crossorigin="anonymous"
   ></script>
-  <%- include('../partials/userfooter.ejs')%>
 </body>
+
+

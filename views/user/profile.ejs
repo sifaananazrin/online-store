@@ -1,0 +1,126 @@
+
+<%- include('../partials/userheader.ejs')%>
+
+
+
+<section class="mt-5 py-3">
+
+
+    <div class="container py-5">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-12">
+                <div class="card card-registration card-registration-2" style="border-radius: 15px">
+                    <div class="card-body p-0">
+                        <div class="row g-0 ">
+                            <div class="col-lg-8">
+                                <div class="p-5 border">
+                                    <div
+                                        class="d-flex justify-content-between align-items-center mb-5 ">
+                                        <h1 class="fw-bold mb-0 text-black">Profile</h1>
+                                    </div>
+                                    <div class="align-self-center">
+                                        <table class="table table-borderless p-md-5">
+                                            <tr>
+                                                <th>Name:&nbsp;&nbsp; <%= user.full_name %></th>
+                                               
+                                            </tr>
+                                            <tr>
+                                                <th>Phone:&nbsp;&nbsp;   <%= user.phone %></th>
+                                               
+                                            </tr>
+                                            <tr>
+                                                <th>Email:&nbsp;&nbsp;  <%= user.email %> </th>
+                                                
+                                            </tr>
+
+                                            <tr>
+                                                <th>Password:  <a href="/user/changePassword"
+                                                    class="btn btn-dark btn-sm">Change
+                                                    Password</a></th>
+                                               
+                                            </tr>
+                                        </table>
+                                        <a href="/user/orders" class="btn btn-dark btn-sm">My
+                                            Orders</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4 text-light border border-secondary"
+                                style="background-color: #5E7D7E;"
+                                <div class="p-5">
+
+                                    <h3 class="fw-bold mb-2 mt-2">Address</h3>
+                                    <hr class="my-4" />
+                                    <% address.forEach(addrs=> { %>
+                                        <address>
+                                            <%= addrs.address %>, <br />
+                                                <%= addrs.city %>,<%= addrs.state %>, <br />
+                                                        <%= addrs.pincode %>
+                                                            <br />
+                                                            <a href="/user/editAddress/<%= addrs._id %>"
+                                                                class="btn btn-sm btn-dark">Edit</a>
+                                                            <a href="/user/deleteAddress/<%= addrs._id %>"
+                                                                class="btn btn-sm btn-danger">Delete</a>
+                                        </address>
+                                        <% }) %>
+                                            <% if (address.length <=1) { %>
+                                                <a href="/user/addAddress"
+                                                    class="btn btn-sm btn-dark">+ Add
+                                                    address</a>
+                                                <% } %>
+                                </div>
+                            </div>
+
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<%- include('../partials/userfooter.ejs')%>

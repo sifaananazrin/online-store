@@ -3,7 +3,7 @@
 :root {
   --lg-font: "Kaisei Tokumin", serif;
   --sm-font: "Poppins", sans-serif;
-  --pink: #e5345b;
+  --pink: #a32d47;
 }
 body {
   font-family: var(--sm-font);
