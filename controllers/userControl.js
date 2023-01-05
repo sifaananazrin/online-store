@@ -63,17 +63,16 @@ const loginPost = async (req, res) => {
               session.account_type = "user";
               session.userid = userData._id;
               res.redirect("/user/home");
-            } else {
-              message = "wrong password";
-              res.render("user/login", { message });
+            } else if(!passwordMatch){
+           
+              res.render("user/login", { message:"wrong password" });
             }
-          } else {
-            message = "You are blocked";
-            res.render("user/login", { message });
+          } else if(userData.isBlock === false){
+        
+            res.render("user/login", { message:"You are blocked" });
           }
         } else {
-          message = "Register to continue";
-          res.render("user/login", { message });
+       res.render("user/login", { message : "Register to continue" });
         }
       }
       });
@@ -156,6 +155,7 @@ const signupPost = async (req, res) => {
   email = req.body.email;
   phone = Number(req.body.phoneNumber);
   password = req.body.password;
+  conform=req.body.confirmpassword
   let mailDetails = {
     from: "Shifananazrin15@gmail.com",
     to: email,
@@ -166,7 +166,7 @@ const signupPost = async (req, res) => {
   const user = await Users.findOne({ email: email });
   if (user) {
     res.render("user/registerform");
-  } else {
+  }  if(password==conform) {
     mailTransporter.sendMail(mailDetails, function (err, data) {
       if (err) {
         console.log("Error Occurs,,,,");

@@ -29,11 +29,7 @@
         </div>
     </div>
     <form action="/user/login" method="post">  
-        <% if ( message.length> 0) { %>
-            <h4 class="wrongID">
-              <%= message %>
-            </h4>
-            <% } %>  
+        
         <section class="h-100">
             <div class="container py-5">
                 <div class="row d-flex justify-content-center align-items-center h-100">
@@ -66,6 +62,11 @@
                                     class="form-control rounded-0 form-control-lg" required />
                                 <div class="d-flex justify-content-between">
                                     <label class="form-label" for="loginpassword">Password</label>
+                                    <% if ( message.length> 0) { %>
+                                        <script>
+                                   window.alert(" <%= message %>")     
+                                        </script>
+                                        <% } %>  
                                     <a class="link-style" href="./forgetpassword.html" style="color:#357EC7">Forget Password</a>
                                 </div>
                             </div>
@@ -112,3 +113,8 @@
 </body>
 
 </html>
+<style>
+.wrongID{
+color: #fff;
+}
+</style>
