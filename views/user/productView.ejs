@@ -24,23 +24,26 @@
                      <div>
                     <!-- <form class="add-inputs" method="post"> -->
                         <!-- <input type="number" class="form-control" id="cart_quantity" name="cart_quantity" value="1" min="1" max="10"> -->
-                        <a href="http://localhost:3000/user/addToCart/<%= products._id %>">
+                        <a href="/user/addToCart/<%= products._id %>">
 
                         <button id="cartButton" name="add_to_cart"  class="btn  btn-lg btn-dark text-white">Add to cart</button></a>
                     </div>
                     <!-- </form> -->
                     <!-- <form class="add-inputs" method="post"> -->
-                        <a
-                        onclick="addWishlistItem('<%= products._id %>')"
-                        class="btn btn-lg add-btn"
-                      >
-                      <div class="d-flex justify-content-center align-items-center">
-                        <span class="material-symbols-outlined" style="font-size: 30px;">
-                          favorite
-                          </span>
-                      </div>
-                      </a>  
-                           
+                        
+                        <% if(customer===true) { %>
+                            <a onclick="sweet('<%= products._id %>')">
+                                <i id="wish" class="fa-regular fa-heart px-2"
+                                    ></i></a>
+                            <a
+                                href="/addToCart/<%= products._id %>">
+                                <i class="fas fa-regular fa-cart-shopping px-2"></i></a>
+                            <% }else{ %>
+                                <a href="/login">
+                                    <i
+                                        class="fas fa-regular fa-cart-shopping px-2"></i><i
+                                        class="fa-regular fa-heart px-2"></i></a>
+                                <% } %>
                                
                     <!-- </form> -->
                     <div style="clear:both"></div>
@@ -188,23 +191,33 @@ crossorigin="anonymous"></script>
           },
         });
       }
-      function addWishlistItem(pid) {
-        $.ajax({
-          url: "/addToWishlist",
-          data: {
-            pid,
-          },
-          method: "post",
-          success: () => {
-            swal("Item Added", "Item added to your wishlist", "success")
-            .then(() => {
-              location.reload();
-            });
-          },
-        });
-      }
+     
                    
 </script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+                    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>                    
+                    <script>
+                        function sweet(pid) {
+                            $.ajax({
+                                url: "/addToWishlist",
+                                data: {
+                                    pid,
+                                },
+                                method: "post",
+                                success: () => {
+                                    swal("Product Added", "Product added to your wishlist", "success")
+                                        .then(() => {
+                                            location.reload();
+                                        });
+                                },
+                            });
+                        }
+                    </script>
+
+                    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+                        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+                        crossorigin="anonymous"></script>
 
 
 
+                        <%- include('../partials/userfooter.ejs') %>

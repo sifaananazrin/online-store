@@ -587,7 +587,7 @@ const postAddCoupon = async (req, res) => {
       
       res.redirect('/admin/addCoupon');
     } else {
-      // eslint-disable-next-line prefer-destructuring
+    
       const Coupon = Coupons;
       const coupon = new Coupon({
         coupon_code: code,

@@ -5,13 +5,14 @@ const userRoutes = require('./routes/userRoutes');
 const adminRoutes = require('./routes/adminRoutes');
 const path = require('path');
 const app = express();
+const flash = require('connect-flash');
 
 const dotenv = require("dotenv");
 const dbconnect=require('./config/database-connection')
 dbconnect.connectDB();
 
 dotenv.config();
-
+app.use(flash());
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

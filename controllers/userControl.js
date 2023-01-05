@@ -87,7 +87,7 @@ const loginPost = async (req, res) => {
     let count = 0;
     const banners = await Banners.find();
     const products = await Products.find().limit(3);
-    const discounts = await Products.find({ discount: true });
+    const discounts = await Products.find();
     if (session.userid && session.account_type === 'user') {
       const userData = await Users.findOne({ _id: session.userid });
       const cart = await Carts.find({ userId: userData._id });
@@ -967,7 +967,7 @@ const postDeleteWishlist = async (req, res) => {
     res.redirect('/500');
   }
 };
-// end
+
 const allproduct = async (req, res) => {
   const { session } = req;
   let count = 0;
@@ -1018,11 +1018,11 @@ module.exports = {
   getOrders,
   verifyPayment,
   paymentFailure,
+  couponCheck,
+  allproduct,
   getWishlist,
   postAddToWishlist,
   postDeleteWishlist,
-  couponCheck,
-  allproduct
  
  
 };

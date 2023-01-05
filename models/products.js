@@ -37,6 +37,10 @@ const ProdectSchema = new Schema({
     type: Boolean,
     default: false,
   },
+  discount: {
+    type: Boolean,
+    default: false,
+  },
   dateCreated: {
     type: Date,
     default: Date.now,
