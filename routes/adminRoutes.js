@@ -55,7 +55,8 @@ router.get('/addBanner', verifyLogin.adminSession, controller.getAddBanner);
 router.post('/addBanner', upload.single("image"), verifyLogin.adminSession, controller.postAddBanner);
 router.get('/deleteBanner/:id', verifyLogin.adminSession, controller.getDeleteBanner);
 
-
+router.get('/blockproduct/:id', verifyLogin.adminSession,controller.blockproduct);
+router.get('/unblockproduct/:id',verifyLogin.adminSession, controller.unblockproduct);
 // router.get('/coupon', verifyLogin.adminSession, controller.getCoupon);
 // router.get('/addCoupon', verifyLogin.adminSession, controller.getAddCoupon);
 // router.post('/addCoupon', verifyLogin.adminSession, controller.postAddCoupon);
