@@ -82,50 +82,7 @@
 </div>
 
    
-<% discounts.forEach( discount=> { %>
 
-
-	<div class="col-sm-12 col-md-3">
-		<div class="card">
-			<a class="img-card2"
-				href="/productDetail/<%= discount._id %>">
-		
-			</a>
-			<div class="card-content">
-				<h4 class="card-title text-center">
-					<a href="">
-						<del class="text-primary">Rs.<%= (discount.price)*2 %></del>
-						Rs.<%= discount.price %>
-					</a>
-					<% if(customer===true) { %>
-						<a onclick="sweet('<%= discount._id %>')">
-							<i id="wish" class="fa-regular fa-heart px-2"
-								></i></a>
-						<a
-							href="/addToCart/<%= discount._id %>">
-							<i class="fas fa-regular fa-cart-shopping px-2"></i></a>
-						<% }else{ %>
-							<a href="/login">
-								<i
-									class="fas fa-regular fa-cart-shopping px-2"></i><i
-									class="fa-regular fa-heart px-2"></i></a>
-							<% } %>
-				</h4>
-				<p class="text-center">
-					<%= discount.item_name %>
-				</p>
-			</div>
-			<div class="card-read-more">
-				<a href="/productDetail/<%= discount._id %>"
-					class="btn btn-link btn-block">
-					View Details
-				</a>
-			</div>
-		</div>
-	</div>
-
-	<% }) %>
-    
    
 
 

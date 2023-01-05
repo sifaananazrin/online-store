@@ -107,7 +107,7 @@ const loginPost = async (req, res) => {
       const { session } = req;
       const { id } = req.params;
       const products = await Products.findOne({ _id: id });
-  
+      // const discounts = await Products.find();
       if (session.userid && session.account_type === 'user') {
         let count = 0;
         const userData = await Users.findOne({ _id: session.userid });
@@ -987,6 +987,55 @@ const allproduct = async (req, res) => {
     res.render('user/category', { customer, products, count, discounts });
   }
 };
+const search = async (req, res) => {
+  const { session } = req;
+  try {
+    let customer;
+    const pageNum = req.query.page;
+    const perPage = 6;
+    let count = 0;
+    const searchvalue = req.body.searchinput;
+    const text = 'Results for your search: ';
+    const docCount = await Products.find({
+      $and: [
+        { difference: { $gt: 0 } },
+        { difference: { $subtract: ['$stock', 'soldCount'] } },
+        { item_name: new RegExp(searchvalue, 'i') },
+      ],
+    })
+      .countDocuments();
+
+    Products.find({
+      $and: [
+        { isBlock: false },
+        { difference: { $subtract: ['$stock', 'soldCount'] } },
+        { $gt: 0 },
+        { item_name: new RegExp(searchvalue, 'i') },
+      ],
+    })
+      .skip((pageNum - 1) * perPage)
+      .limit(perPage)
+      .then((products) => {
+        Carts.findOne({ user_id: req.session.userID }).then((doc) => {
+          if (doc) {
+            count = doc.product.length;
+          }
+          if (session.userid && session.account_type === 'user') {
+            customer = true;
+            res.render('user/foodview', { page: '/', docCount, pageNum, pages: Math.ceil(docCount / perPage), customer, products, count, searchvalue, text ,session});
+          } else {
+            customer = false;
+            res.render('user/foodview', { page: '/', docCount, pageNum, pages: Math.ceil(docCount / perPage), customer, products, count, searchvalue, text,session });
+          }
+        });
+      })
+      .catch(() => {
+        res.redirect('/500');
+      });
+  } catch (error) {
+    res.redirect('/500');
+  }
+};
 
 
 
@@ -1023,6 +1072,7 @@ module.exports = {
   getWishlist,
   postAddToWishlist,
   postDeleteWishlist,
+  search,
  
  
 };

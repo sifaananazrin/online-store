@@ -24,7 +24,7 @@ router.get('/cart',verifyLogin.userSession, controller.getCart);
 
 router.post('/cartQuantity', verifyLogin.userSession, controller.cartQuantity);
 router.post('/deleteProduct', verifyLogin.userSession, controller.postDeleteProduct);
-
+router.post('/store', controller.search);
 router.get('/profile', verifyLogin.userSession, controller.getProfile);
 router.get('/changePassword', verifyLogin.userSession, controller.getChangePassword);
 router.post('/changePassword', verifyLogin.userSession, controller.postChangePasswod);
