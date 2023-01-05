@@ -127,6 +127,7 @@ const loginPost = async (req, res) => {
       }
     } catch (error) {
       console.log(error.message);
+res.redirect('/404')
     }
   };
 
@@ -396,7 +397,7 @@ const getCheckout = async (req, res) => {
     {
       $addFields: {
         productPrice: {
-          $sum: { $multiply: ['$productQuantity', '$productDetail.cost'] },
+          $sum: { $multiply: ['$productQuantity', '$productDetail.price'] },
         },
       },
     },
@@ -1022,10 +1023,10 @@ const search = async (req, res) => {
           }
           if (session.userid && session.account_type === 'user') {
             customer = true;
-            res.render('user/foodview', { page: '/', docCount, pageNum, pages: Math.ceil(docCount / perPage), customer, products, count, searchvalue, text ,session});
+            res.render('user/category', { page: '/', docCount, pageNum, pages: Math.ceil(docCount / perPage), customer, products, count, searchvalue, text ,session});
           } else {
             customer = false;
-            res.render('user/foodview', { page: '/', docCount, pageNum, pages: Math.ceil(docCount / perPage), customer, products, count, searchvalue, text,session });
+            res.render('user/category', { page: '/', docCount, pageNum, pages: Math.ceil(docCount / perPage), customer, products, count, searchvalue, text,session });
           }
         });
       })

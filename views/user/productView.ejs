@@ -20,29 +20,30 @@
                         <%= products.item_name %>                
                     </h3>
                     <hr>
-                    <p class="product-price text-danger">$<%= products.price %></p>
+                    <p class="product-price text-danger">Rs:<%= products.price %></p>
                      <div>
                     <!-- <form class="add-inputs" method="post"> -->
                         <!-- <input type="number" class="form-control" id="cart_quantity" name="cart_quantity" value="1" min="1" max="10"> -->
                         <a href="/user/addToCart/<%= products._id %>">
 
-                        <button id="cartButton" name="add_to_cart"  class="btn  btn-lg btn-dark text-white">Add to cart</button></a>
-                    </div>
+                        <button id="cartButton" name="add_to_cart"  class="btn  btn-lg btn-dark text-white">Cart</button></a>
                     <!-- </form> -->
                     <!-- <form class="add-inputs" method="post"> -->
-                        
+                        <div>
                         <% if(customer===true) { %>
                             <a onclick="sweet('<%= products._id %>')">
-                                <i id="wish" class="fa-regular fa-heart fa-2x px-2"
-                                    ></i></a>
-                           
+                                <!-- <i id="wish" class="fa-regular fa-heart fa-2x px-2" -->
+
+                                    <button id="cartButton" name="add_to_cart"  class="btn  btn-lg btn-dark text-white mt-2">Wishlist</button></a>
+
+                                    </a>
                             <% }else{ %>
                                 <a href="/login">
                                     <i
                                         class="fas fa-regular fa-cart-shopping px-2"></i><i
                                         class="fa-regular fa-heart px-2"></i></a>
                                 <% } %>
-                               
+                            
                     <!-- </form> -->
                     <div style="clear:both"></div>
 
@@ -217,4 +218,3 @@ crossorigin="anonymous"></script>
                         crossorigin="anonymous"></script>
 
 
-                        <%- include('../partials/userfooter.ejs') %>
