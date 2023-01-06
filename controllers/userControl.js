@@ -8,6 +8,7 @@ const Carts = require('../models/carts');
 const nodemailer = require("nodemailer");
 const Products = require("../models/products");
 const moment = require('moment');
+const Coupons = require('../models/coupon');
 const crypto = require('crypto');
 const instance = require('../middleware/razorpay');
 const Wishlists=require('../models/whishlist')
@@ -63,9 +64,15 @@ const loginPost = async (req, res) => {
               session.account_type = "user";
               session.userid = userData._id;
               res.redirect("/user/home");
+<<<<<<< HEAD
             } else if(!passwordMatch){
            
               res.render("user/login", { message:"wrong password" });
+=======
+            } else {
+              message = "incorrect password";
+              res.render("user/login", { message });
+>>>>>>> c40c46119bff336bcd552197e7566a09bfc70eac
             }
           } else if(userData.isBlock === false){
         
@@ -407,7 +414,7 @@ const getCheckout = async (req, res) => {
   const count = cart.length;
   Address.find({ user_id: uid }).then((address) => {
     res.render('user/checkout', {
-      allData: cart, count, sum, name: req.session.firstName, address, customer,
+      allData: cart, count, sum, name: req.session.full_name, address, customer,
     });
   }).catch((e) => {
     console.log(e);
@@ -1039,6 +1046,84 @@ const search = async (req, res) => {
 };
 
 
+forgotPassword= (req, res) => {
+  try {
+    user = req.session.userid;
+    if (user) {
+      res.redirect("/user/login");
+    } else {
+      res.render("user/forgotpassword");
+    }
+  } catch (error) {
+    res.render("user/404");
+  }
+},
+
+postforgotPassword= async (req, res) => {
+  
+    let Data = req.body.email;
+
+    let userData = await Users.findOne({ email: Data });
+    let mailDetails = {
+      from: "shifananazrin15@gmail.com",
+      to: Data,
+      subject: "Brandy ACCOUNT VERIFICATION",
+      html: `<p>YOUR OTP FOR RESET PASSWORD IS <h1> ${OTP} <h1> </p>`,
+    };
+    mailTransporter.sendMail(mailDetails,function (err, data) {
+      if (err) {
+        console.log("error occurs");
+      } else {
+        console.log("Email Sent Successfully");
+        res.render("user/resetpassotp", { Data });
+      }
+    });
+  } 
+
+
+postotpsignup= async (req, res) => {
+  let data = req.body.details;
+
+  try {
+    let otp = req.body.otp;
+    if (OTP == otp) {
+      console.log("matchedd");
+      res.render("user/resetpassword", { data });
+    } else {
+      console.log("error");
+    }
+  } catch (error) {
+    res.render("404");
+  }
+},
+
+postNewPassword= async (req, res) => {
+  try {
+    const data = req.body;
+    if (data.password && data.confirmpassword) {
+      if (data.confirmpassword) {
+        let newPassword = await bcrypt.hash(data.password, 10);
+
+        Users.updateOne(
+          { email: data.email },
+          {
+            $set: {
+              password: newPassword,
+            },
+          }
+        ).then((data) => {
+          console.log(data);
+          res.redirect("/user/login");
+        });
+      }
+    }
+  } catch (error) {
+    res.render("404");
+  }
+}
+
+
+
 
 module.exports = {
   loginRender,
@@ -1074,6 +1159,10 @@ module.exports = {
   postAddToWishlist,
   postDeleteWishlist,
   search,
+  forgotPassword,
+  postforgotPassword,
+  postotpsignup,
+  postNewPassword,
  
  
 };

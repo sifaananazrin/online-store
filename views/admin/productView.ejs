@@ -419,6 +419,19 @@ function validateBanner(form) {
                   </div>
                   </td>
                 </tr>
+                <% if (allproducts.isDeleted===false) { %>
+                  <td class="align-middle">
+                    <a href="/admin/blockproduct/<%= allproducts._id %>" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
+                      Disable
+                    </a>
+                  </td>
+                  <% } else { %>
+                  <td class="align-middle">
+                    <a href="/admin/unblockproduct/<%= allproducts._id %>" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
+                      Enable
+                    </a>
+                  </td>
+                  <% } %>
                 <% }) %>
               </tbody>
             </table>

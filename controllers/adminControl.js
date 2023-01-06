@@ -291,7 +291,7 @@ const postAddProduct = async (req, res) => {
       category: req.body.category,
       stock:req.body.stock,
       soldCount: 10,
-
+      discount: true,
       image:IMAGE_PATH,
      
     });
@@ -347,6 +347,25 @@ const postEditProduct = (req, res) => {
     });
 };
 
+const blockproduct = async (req, res) => {
+  try {
+    await Products.updateOne({ _id: req.params.id }, { $set: { isDeleted: true } }).then(() => {
+      res.redirect('/admin/products');
+    });
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+const unblockproduct = async (req, res) => {
+  try {
+    await Products.updateOne({ _id: req.params.id }, { $set: { isDeleted: false } }).then(() => {
+      res.redirect('/admin/products');
+    });
+  } catch (error) {
+    console.log(error.message);
+  }
+};
 
 
 
@@ -697,4 +716,6 @@ module.exports = {
   getAddBanner,
   postAddBanner,
   getDeleteBanner,
+  unblockproduct,
+  blockproduct,
 };

@@ -43,7 +43,10 @@ router.post('/couponCheck', verifyLogin.userSession, controller.couponCheck);
 router.get('/wishlist', verifyLogin.userSession, controller.getWishlist);
 router.post('/addToWishlist', verifyLogin.userSession, controller.postAddToWishlist);
 router.post('/deleteWishlist', verifyLogin.userSession, controller.postDeleteWishlist);
-
+router.get('/forgotpassword',controller.forgotPassword)
+router.post('/forgotpassword',controller.postforgotPassword)
+router.post('/resetpassotp',controller.postotpsignup)
+router.post('/newpassword',controller.postNewPassword)
 
 
 

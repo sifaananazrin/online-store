@@ -29,7 +29,11 @@
         </div>
     </div>
     <form action="/user/login" method="post">  
+<<<<<<< HEAD
         
+=======
+       
+>>>>>>> c40c46119bff336bcd552197e7566a09bfc70eac
         <section class="h-100">
             <div class="container py-5">
                 <div class="row d-flex justify-content-center align-items-center h-100">
@@ -62,13 +66,27 @@
                                     class="form-control rounded-0 form-control-lg" required />
                                 <div class="d-flex justify-content-between">
                                     <label class="form-label" for="loginpassword">Password</label>
+<<<<<<< HEAD
                                     <% if ( message.length> 0) { %>
                                         <script>
                                    window.alert(" <%= message %>")     
                                         </script>
                                         <% } %>  
                                     <a class="link-style" href="./forgetpassword.html" style="color:#357EC7">Forget Password</a>
+=======
+                                    <a class="link-style" href="/user/forgotpassword" style="color:#357EC7">Forget Password</a>
+>>>>>>> c40c46119bff336bcd552197e7566a09bfc70eac
                                 </div>
+                                <% if(message!="") {%> 
+                                    
+                                     <p class="text-danger"> <%=message%></p>
+                                    
+                                    <% } %> 
+                                    <% if(message!="") {%> 
+                                        <script>
+                                          alert('<%=message%>')
+                                        </script>
+                                        <% } %> 
                             </div>
                             <div class="form-check form-switch">
                                 <input class="form-check-input shadow-remove" type="checkbox"
@@ -96,8 +114,67 @@
         </section>
     </form>
 
-    <script src="./js/loginSignup.js"></script>
-    <script src="./js/sweetalert.min.js"></script>
+    <script >
+        function showusersignuppassword() {
+    var signUserPass = document.getElementById('signUserPass');
+    if (signUserPass.type === "password") {
+        signUserPass.type = "text"
+    } else {
+        signUserPass.type = "password"
+    }
+}
+function showsignuppassword() {
+    var signupResPassword = document.getElementById("signupResPassword");
+
+    if (signupResPassword.type === "password") {
+        signupResPassword.type = "text";
+    } else {
+        signupResPassword.type = "password";
+    }
+}
+// Show Login Password
+function showloginpassword() {
+    var loginpassword = document.getElementById("loginpassword")
+    if (loginpassword.type === "password") {
+        loginpassword.type = "text";
+    } else {
+        loginpassword.type = "password";
+    }
+}
+
+
+const validation = () => {
+    let signUserName = document.getElementById('signUserName').value;
+    let signUserPhone = document.getElementById('signUserPhone').value;
+    let signUserCountry = document.getElementById('signUserCountry').value;
+    let signUserCity = document.getElementById('signUserCity').value;
+    let email = document.getElementById('signUserEmail').value;
+    let pass = document.getElementById('signUserPass').value;
+    let userSignupButton = document.getElementById('userSignupButton');
+
+    if ((signUserName && signUserPhone && signUserCountry && signUserCity && email && pass).length === 0) {
+        userSignupButton.disabled = true;
+    } else {
+        userSignupButton.disabled = false;
+    }
+}
+
+const resSignupValidation = () => {
+    let signupResName = document.getElementById('signupResName').value;
+    let signupResEmail = document.getElementById('signupResEmail').value;
+    let signupRescountry = document.getElementById('signupRescountry').value;
+    let signuResCity = document.getElementById('signuResCity').value;
+    let signupResPassword = document.getElementById('signupResPassword').value;
+    let file = document.getElementById('MainResImage').files[0];
+    let resSignupButton = document.getElementById('resSignupButton');
+    if ((signupResName && signupResEmail && signupRescountry && signuResCity && signupResPassword).length === 0 || (file === undefined)) {
+        resSignupButton.disabled = true;
+    } else {
+        resSignupButton.disabled = false;
+    }
+}
+    </script>
+    <script src="/js/sweetalert.min.js"></script>
 
 
     <!-- Bootstrap v.5.0 -->
