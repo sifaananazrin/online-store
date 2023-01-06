@@ -64,15 +64,15 @@ const loginPost = async (req, res) => {
               session.account_type = "user";
               session.userid = userData._id;
               res.redirect("/user/home");
-<<<<<<< HEAD
+
             } else if(!passwordMatch){
            
               res.render("user/login", { message:"wrong password" });
-=======
+
             } else {
               message = "incorrect password";
               res.render("user/login", { message });
->>>>>>> c40c46119bff336bcd552197e7566a09bfc70eac
+
             }
           } else if(userData.isBlock === false){
         
