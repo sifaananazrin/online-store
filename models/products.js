@@ -25,10 +25,12 @@ const ProdectSchema = new Schema({
     ref: 'categories',
     required: true,
   },
-  image: {
-    type: String,
-    required: true,
-  },
+  image: [
+    {
+      url: String,
+      filename: String,
+    },
+  ],
   soldCount: {
     type: Number,
     required: true,

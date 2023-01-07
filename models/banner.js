@@ -3,10 +3,12 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 const BannerSchema = new Schema(
   {
-    image: {
-      type: String,
-      required: true,
-    },
+    image: [
+      {
+        url: String,
+        filename: String,
+      },
+    ],
     name: {
       type: String,
       required: true,

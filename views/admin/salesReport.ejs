@@ -20,7 +20,7 @@
 
 <section class="body-section col-md-10 ms-sm-auto me-lg-2 me-md-2 col-lg-10 px-md-4 mt-3">
     <h3 class="i-names">Sales Report</h3>
-    <div class="table-top container mb-5 mt-4 d-flex justify-content-center">
+    <!-- <div class="table-top container mb-5 mt-4 d-flex justify-content-center">
       <div>
         <h4>Today</h4>
       </div>
@@ -63,13 +63,13 @@
           </button>
         </div>
       </div>
-    </div>
+    </div> -->
 
-    <!-- <div
+     <div
       class="table-top container mb-5 mt-4 d-flex justify-content-center mt-5"
-    > -->
-      <!-- <div>
-        <h4>This Month</h4>
+    > 
+       <div>
+        <!-- <h4>This Month</h4> -->
       </div>
     </div>
     <div class="container">
@@ -88,7 +88,7 @@
             <% month.forEach(element => { %>
             <tr>
               <td><%= element.order_id %></td>
-              <td><%= element.user.firstName %></td>
+              <td><%= element.user.full_name %></td>
               <td><%= element.finalAmount %></td>
               <td><%= element.paymentStatus %></td>
               <td><%= element.orderStatus %></td>
@@ -109,7 +109,7 @@
           </button>
         </div>
       </div>
-    </div> -->
+    </div>
 
     <!-- <div
       class="table-top container mb-5 mt-4 d-flex justify-content-center mt-5"

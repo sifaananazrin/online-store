@@ -281,9 +281,9 @@ const getAddProduct = async (req, res) => {
 
 const postAddProduct = async (req, res) => {
   try {
-    const IMAGE_PATH = (req.file.path).slice(7)
+    // const IMAGE_PATH = (req.file.path).slice(7)
 
-
+    
     const products = new Products({
       item_name : req.body.item_name,
       des : req.body.des,
@@ -292,9 +292,11 @@ const postAddProduct = async (req, res) => {
       stock:req.body.stock,
       soldCount: 10,
       discount: true,
-      image:IMAGE_PATH,
+      // image:IMAGE_PATH,
+      
      
     });
+    products.image = req.files.map((f) => ({ url: f.path, filename: f.filename }));
     const productsData = await products.save();
     if (productsData){
       res.redirect('/admin/products');
@@ -311,6 +313,7 @@ const postAddProduct = async (req, res) => {
 
 const getEditProduct = (req, res) => {
   const session = req.session;
+  
   if (session.userid && session.account_type == "admin") {
     const finding = Products.find({ _id: req.params.id })
       .then((result) => {
@@ -327,6 +330,8 @@ const getEditProduct = (req, res) => {
 
 const postEditProduct = (req, res) => {
   console.log(req.body);
+  // const IMAGE_PATH = (req.file.path).slice(7)
+  image = req.files.map((f) => ({ url: f.path, filename: f.filename }));
   const update = Products.findOneAndUpdate(
     { _id: req.params.id },
     {
@@ -336,6 +341,7 @@ const postEditProduct = (req, res) => {
       category: req.body.cat,
       stock:req.body.qty,
       soldCount: 10,
+       image:image,
      
     }
   )
@@ -615,6 +621,7 @@ const postAddCoupon = async (req, res) => {
         coupon_code: code,
         offer,
         max_amount: amount,
+        
       });
       await coupon.save();
       res.redirect('/admin/coupon');
@@ -651,12 +658,13 @@ const getAddBanner = (req, res) => {
 
 const postAddBanner = async (req, res) => {
   try {
-    const IMAGE_PATH = (req.file.path).slice(7)
+    // const IMAGE_PATH = (req.file.path).slice(7)
     const Banner = new Banners({
       name: req.body.name,
       description: req.body.des,
-      image:IMAGE_PATH,
+      // image:IMAGE_PATH,
     });
+    Banner.image = req.files.map((f) => ({ url: f.path, filename: f.filename }));
       const bannerData = await Banner.save();
     if (bannerData) {
       res.redirect('/admin/banner');

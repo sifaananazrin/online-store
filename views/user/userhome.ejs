@@ -2,7 +2,7 @@
 
 <div id="header-hero">
   <% banners.forEach( banner=> { %>
-    <div class="header-bg  width: auto; height: 225px; max-height: 225px;"> <img src="/<%= banner.image %>"" alt="header-image" /> </div>   <% }) %>
+    <div class="header-bg  width: auto; height: 225px; max-height: 225px;"> <img src="<%= banner.image[0].url %>"" alt="header-image" /> </div>   <% }) %>
     <div class="header-content">
         <p class="heading-1">fashion collection 2017</p>
         <h1>wellcome to brand<span class="logo-style">y</span> unique store</h1>
@@ -64,7 +64,7 @@
     
       <div class="card">
        
-        <div class="card_image "><img src="/<%= data.image %>"></div>
+        <div class="card_image "><img src="<%= data.image[0].url %>"></div>
         <div class="card_content">
           <h2 class="card_title"><%= data.item_name%></h2>
           <!-- <p class="card_text">Demo of pixel perfect pure CSS simple responsive card grid layout</p> -->

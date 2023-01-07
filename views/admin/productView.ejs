@@ -120,11 +120,11 @@ function validateAddProduct(form) {
     stock.focus();
     return false;
   }
-  if (file.value == "") {
-    document.getElementById("fileError").innerHTML = "plese upload image";
-    file.focus();
-    return false;
-  }
+  // if (file.value == "") {
+  //   document.getElementById("fileError").innerHTML = "plese upload image";
+  //   file.focus();
+  //   return false;
+  // }
 
   return true;
 }
@@ -224,7 +224,7 @@ function validateEditCoupon(form) {
 }
 function validateBanner(form) {
   let banner = document.getElementById("banner");
-  let image = document.getElementById("image");
+  // let image = document.getElementById("image");
   let bannerText = document.getElementById("bannertext");
   if (banner.value == "") {
     document.getElementById("bannerError").innerHTML =
@@ -232,11 +232,11 @@ function validateBanner(form) {
     banner.focus();
     return false;
   }
-  if (image.value == "") {
-    document.getElementById("imageError").innerHTML = "please upload image";
-    image.focus();
-    return false;
-  }
+  // if (image.value == "") {
+  //   document.getElementById("imageError").innerHTML = "please upload image";
+  //   image.focus();
+  //   return false;
+  // }
   if (bannerText.value == "") {
     document.getElementById("bannerTextError").innerHTML =
       "please enter your bannerText";
@@ -335,11 +335,7 @@ function validateBanner(form) {
                   </td>
                  
                   <td class="col-3 col-md-3 col-lg-3 col-xl-2 text-center">
-                    <img
-                      src="/<%= allproducts.image %>"
-                      alt="product image"
-                      style="width: 5rem"
-                    />
+                    <img class="w-100"  src="<%= allproducts.image[0].url %>" alt="">
                   </td>
                   <td class="col-3 col-md-3 col-lg-3 col-xl-2 text-center">
                     &nbsp; <%= allproducts.dateCreated.toDateString() %>

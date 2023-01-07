@@ -18,6 +18,9 @@ const CouponSchema = new Schema({
     type: String,
     default: 'Active',
   },
+  expiryDate: {
+    type: String,
+},
   used_user_id: [String],
 });
 

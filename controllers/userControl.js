@@ -721,7 +721,7 @@ const confirmOrder = async (req, res) => {
             // eslint-disable-next-line no-underscore-dangle
             address: adrs,
             order_placed_on: moment().format('DD-MM-YYYY'),
-            products: cartData.products,
+            products: cartData.product,
             discount: dis,
             totalAmount: lastTotal,
             finalAmount: Math.round(lastTotal + (lastTotal * 0.15) + 100),
