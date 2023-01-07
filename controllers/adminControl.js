@@ -334,6 +334,8 @@ const postEditProduct = (req, res) => {
       des : req.body.des,
       price: req.body.price,
       category: req.body.cat,
+      stock:req.body.qty,
+      soldCount: 10,
      
     }
   )
@@ -346,6 +348,7 @@ const postEditProduct = (req, res) => {
       console.log(err);
     });
 };
+
 
 const blockproduct = async (req, res) => {
   try {
