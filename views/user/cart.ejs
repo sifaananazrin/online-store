@@ -104,8 +104,7 @@
                       </div>
                     </div>
                     <div class="col-md-4 col-lg-4 col-xl-4 offset-lg-1">
-                      <% if (cartData.productQuantity ===
-                      (cartData.productDetail.stock-cartData.productDetail.soldCount))
+                      <% if (cartData.productQuantity === (cartData.productDetail.stock-cartData.productDetail.soldCount))
                       { %>
                       <p class="text-danger">Sorry...Stock limit reached</p>
                       <% } %>
@@ -141,7 +140,7 @@
                     <!-- <h5 class="text-uppercase mb-3">Shipping</h5> -->
                     <!-- <div class="mb-4 pb-2">
                                                             <select class="select">
-                                                                <option value="1">Standard-Delivery- €5.00</option>
+                                                                <option value="1">Standard-Delivery- rs5.00</option>
                                                                 <option value="2">Two</option>
                                                                 <option value="3">Three</option>
                                                                 <option value="4">Four</option>
@@ -183,22 +182,46 @@
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
   <script>
+    // function changeQuantity(cartId, productId, count) {
+    //   $.ajax({
+    //     url: "/user/cartQuantity",
+    //     data: {
+    //       cart: cartId,
+    //       product: productId,
+    //       count,
+    //     },
+    //     method: "post",
+    //     success: (res) => {
+    //       // document.getElementById('quantity').innerText = Number(qty) + Number(count);
+    //       location.reload();
+    //       // $('#quantity').load(`${document.URL} #quantity`);
+    //     },
+    //   });
+    // }
+
     function changeQuantity(cartId, productId, count) {
-      $.ajax({
-        url: "/user/cartQuantity",
-        data: {
-          cart: cartId,
-          product: productId,
-          count,
-        },
-        method: "post",
-        success: (res) => {
-          // document.getElementById('quantity').innerText = Number(qty) + Number(count);
-          location.reload();
-          // $('#quantity').load(`${document.URL} #quantity`);
-        },
-      });
-    }
+  $.ajax({
+    url: '/user/cartQuantity',
+    data: {
+      cart: cartId,
+      product: productId,
+      count,
+    },
+    method: 'post',
+    success: (res) => {
+      // if (res.status) {
+      //   document.getElementById(productId).innerHTML = Number(qty) + Number(count);
+      // }
+
+      location.reload();
+      // $('#quantity').load(`${document.URL} #quantity`);
+    },
+  });
+}
+
+
+
+
     function deleteProduct(cartId, productId) {
       $.ajax({
         url: "/user/deleteProduct",

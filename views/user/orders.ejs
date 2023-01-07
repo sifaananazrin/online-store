@@ -1,5 +1,25 @@
 <%- include('../partials/userheader.ejs')%>
-
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+crossorigin="anonymous"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>             
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+crossorigin="anonymous"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js"
+    integrity="sha384-Atwg2Pkwv9vp0ygtn1JAojH0nYbwNJLPhwyoVbhoPwBhjQPR5VtM2+xf0Uwh9KtT"
+    crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://kit.fontawesome.com/0122127a2d.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@sweetalert2/themes@3.3.3/bootstrap-4/bootstrap-4.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.7.0/dist/sweetalert2.all.min.js"></script>
+<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"> -->
 <section>
 
 
@@ -57,7 +77,7 @@
                                                                     Products
                                                                 </h1>
                                                                 <button type="button" class="btn-close"
-data-bs-dismiss="modal"
+                                                                      data-bs-dismiss="modal"
                                                                     aria-label="Close"></button>
                                                             </div>
                                                             <div class="modal-body">
@@ -69,9 +89,9 @@ data-bs-dismiss="modal"
                                                                                 (data.order_id==element.order_id+'')
                                                                                 { %>
                                                                                 <div class="d-flex justify-content-start"
-                                                                                    style="border: 0.5px solid #d9d9d9">
+                                                                                    style="border: 0.5px solid #000000">
                                                                                     <div>
-                                                                                        <img src="<%= element.productDetail.image %>"
+                                                                                        <img src="/<%= element.productDetail.image %>"
                                                                                             alt=""
                                                                                             style="width: 100px; height: 100px" />
                                                                                     </div>
@@ -84,35 +104,82 @@ data-bs-dismiss="modal"
                                                                                                 element.productQuantity
                                                                                                 %>
                                                                                         </div>
-                                                                                        <div>Size: <%=
-                                                                                                element.productSize
-                                                                                                %>
-                                                                                        </div>
-                                                                                        <div>Total: <%=
-                                                                                                element.productPrice
+                                                                                        
+                                                                                        <div>Price: <%=
+                                                                                                element.productDetail.price
                                                                                                 %>
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
-                                                                                <% } %>
-                                                                                    <% }) %>
-</div>
-                                            </div>
+                                                                                                <% } %>
+                                                                                                    <% }) %>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="modal-footer">
+                                                                                <button type="button"
+                                                                                    class="btn btn-secondary"
+                                                                                    data-bs-dismiss="modal">
+                                                                                    Close
+                                                                                </button>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-3">
+                                                                    <dl
+                                                                        class="d-flex flex-column justify-content-center">
+                                                                        <dt>items</dt>
+                                                                        <dd>
+                                                                            <ul>
+                                                                                <% productData.forEach(element=> { %> <%
+                                                                                        if (data._id+''==''
+                                                                                        +element._id) { %>
+                                                                                        <li>
+                                                                                            <%= element.productDetail.item_name
+                                                                                                %> &times; <%=
+                                                                                                    element.productQuantity
+                                                                                                    %>
+                                                                                        </li>
+                                                                                        <% } %>
+                                                                                            <% }) %>
+                                                                            </ul>
+                                                                        </dd>
+                                                                    </dl>
+                                                                </div>
+                                                                <div class="col-md-3 d-flex flex-column">
+                                                                    <b>Total Amount:</b>&nbsp;Rs.<%= data.totalAmount %>
+                                                                        <br />
+                                                                        <b>Payment:</b>
+                                                                        <%= data.paymentMethod %>(<%= data.paymentStatus
+                                                                                %>)
+                                                                </div>
+                                                                <div class="col-md-3 d-flex flex-column">
+                                                                    <b>Order Status: </b>
+                                                                    <%= data.orderStatus %> <br />
+                                                                        <b>delivery expected: </b>
+                                                                        <%= data.expectedDelivery %>
+                                                                </div>
+                                                                <div class="col-md-12 d-flex justify-content-center">
+                                                                   
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <% }) %>
+                                                            <% } %>
+
+
+
                                         </div>
-                                        <% }) %>
-                                            <% } %>
-
-
-
-                        </div>
-                    </div>
-                </div>
-            </div>
+                                    </div>
+                                </div>
+                            </div>
 
 
 
 
-</section>
+                </section>
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 
 <script>
@@ -170,7 +237,17 @@ success: () => {
 integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
 crossorigin="anonymous"></script>
 
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+        integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js"
+        integrity="sha384-IDwe1+LCz02ROU9k972gdyvl+AESN10+x7tBKgc9I5HFtuNz0wWnPclzo6p9vxnk"
+        crossorigin="anonymous"></script>
 
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+                        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+                        crossorigin="anonymous"></script>
+                        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 
 <%- include('../partials/userfooter.ejs') %>
 

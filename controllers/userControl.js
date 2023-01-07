@@ -323,10 +323,44 @@ const getAddToCart = async (req, res) => {
   }
 };
 
+// const cartQuantity = async (req, res, next) => {
+//   const data = req.body;
+//   data.count = Number(data.count);
+//   data.quantity = Number(data.quantity);
+//   const objId = mongoose.Types.ObjectId(data.product);
+//   const productDetail = await Products.findOne({ _id: data.product });
+//   if (
+//     (data.count == -1 && data.quantity == 1)
+//     || (data.count == 1 && data.quantity == productDetail.stock)
+//   ) {
+//     res.json({ quantity: true });
+//   } else {
+//     await Carts
+//       .aggregate([
+//         {
+//           $unwind: '$product',
+//         },
+//       ])
+//       .then(() => {
+//         Carts
+//           .updateOne(
+//             { _id: data.cart, 'product.productId': objId },
+//             { $inc: { 'product.$.quantity': data.count } },
+//           )
+//           .then(() => {
+//             res.json({ status: true });
+//             next();
+//           });
+//       });
+//   }
+// };
+
+
 const cartQuantity = async (req, res, next) => {
   const data = req.body;
   data.count = Number(data.count);
   data.quantity = Number(data.quantity);
+  console.log('inside change');
   const objId = mongoose.Types.ObjectId(data.product);
   const productDetail = await Products.findOne({ _id: data.product });
   if (
@@ -354,6 +388,7 @@ const cartQuantity = async (req, res, next) => {
       });
   }
 };
+
 
 const postDeleteProduct = (req, res) => {
   const cartid = req.body.cart;
@@ -429,7 +464,7 @@ const getProfile = async (req, res) => {
   const userid = session.userid;
   if (session.userid && session.account_type === 'user') {
     const customer = true;
-    await Carts.findOne({ user_id: req.session.userID }).then((doc) => {
+    await Carts.findOne({ user_id: req.session.userid }).then((doc) => {
       if (doc) {
         count = doc.product.length;
       }
@@ -603,16 +638,20 @@ const couponCheck = async (req, res) => {
 
 
 
-
-
-
-
-
-const confirmOrder = (req, res) => {
+const confirmOrder = async (req, res) => {
   const uid = mongoose.Types.ObjectId(req.session.userid);
   const paymethod = req.body.pay;
   const adrs = req.body.address;
-  Users.findOne({ user_id: uid }).then((userData) => {
+  const coupon = await Coupons.findOne({ coupon_code: req.body.coupon });
+  if (coupon) {
+    await Coupons.updateOne(
+      { coupon_code: req.body.coupon },
+      {
+        $push: { used_user_id: uid },
+      },
+    );
+  }
+  Users.findOne({ user_id: uid }).then(() => {
     Carts.aggregate([
       {
         $match: { userId: uid },
@@ -650,12 +689,11 @@ const confirmOrder = (req, res) => {
       },
     ])
       .then((result) => {
-      
+        // eslint-disable-next-line no-plusplus
         for (let i = 0; i < result.length; i++) {
           const sold = result[i].productDetail.soldCount + result[i].productQuantity;
-          console.log('total sold =', sold);
           Products.updateMany(
-           
+            // eslint-disable-next-line no-underscore-dangle
             { _id: result[i].productDetail._id },
             { soldCount: sold },
           ).then(() => {
@@ -663,18 +701,30 @@ const confirmOrder = (req, res) => {
             console.log(err);
           });
         }
-        // const count = result.length;
+        let dis = 0;
+        let lastTotal = 0;
         const sum = result
           .reduce((accumulator, object) => accumulator + object.productPrice, 0);
+        if (coupon) {
+          dis = (Number(sum) * Number(coupon.offer)) / 100;
+          if (dis > Number(coupon.max_amount)) {
+            dis = Number(coupon.max_amount);
+          }
+          lastTotal = sum - dis;
+        } else {
+          lastTotal = sum;
+        }
         Carts.findOne({ userId: uid }).then((cartData) => {
           const order = new Orders({
             order_id: Date.now(),
             user_id: uid,
+            // eslint-disable-next-line no-underscore-dangle
             address: adrs,
             order_placed_on: moment().format('DD-MM-YYYY'),
-            products: cartData.product,
-            totalAmount: sum,
-            finalAmount: Math.round(sum + (sum * 0.15) + 100),
+            products: cartData.products,
+            discount: dis,
+            totalAmount: lastTotal,
+            finalAmount: Math.round(lastTotal + (lastTotal * 0.15) + 100),
             paymentMethod: paymethod,
             expectedDelivery: moment().add(4, 'days').format('MMM Do YY'),
           });
@@ -684,15 +734,13 @@ const confirmOrder = (req, res) => {
             const oid = done._id;
             Carts.deleteOne({ user_id: uid }).then(() => {
               if (paymethod === 'cod') {
-                console.log('payment is cod');
                 res.json([{ success: true, oid }]);
               } else if (paymethod === 'online') {
-                console.log('payment is online');
                 // const amount = done.totalAmount * 100;
                 const amount = done.finalAmount * 100;
                 const options = {
                   amount,
-                  
+                  // amountFinal,
                   currency: 'INR',
                   receipt: `${oid}`,
                 };
@@ -711,6 +759,113 @@ const confirmOrder = (req, res) => {
       });
   });
 };
+
+
+
+
+// const confirmOrder = (req, res) => {
+//   const uid = mongoose.Types.ObjectId(req.session.userid);
+//   const paymethod = req.body.pay;
+//   const adrs = req.body.address;
+//   Users.findOne({ user_id: uid }).then((userData) => {
+//     Carts.aggregate([
+//       {
+//         $match: { userId: uid },
+//       },
+//       {
+//         $unwind: '$product',
+//       },
+//       {
+//         $project: {
+//           productItem: '$product.productId',
+//           productQuantity: '$product.quantity',
+//         },
+//       },
+//       {
+//         $lookup: {
+//           from: 'products',
+//           localField: 'productItem',
+//           foreignField: '_id',
+//           as: 'productDetail',
+//         },
+//       },
+//       {
+//         $project: {
+//           productItem: 1,
+//           productQuantity: 1,
+//           productDetail: { $arrayElemAt: ['$productDetail', 0] },
+//         },
+//       },
+//       {
+//         $addFields: {
+//           productPrice: {
+//             $sum: { $multiply: ['$productQuantity', '$productDetail.price'] },
+//           },
+//         },
+//       },
+//     ])
+//       .then((result) => {
+      
+//         for (let i = 0; i < result.length; i++) {
+//           const sold = result[i].productDetail.soldCount + result[i].productQuantity;
+//           console.log('total sold =', sold);
+//           Products.updateMany(
+           
+//             { _id: result[i].productDetail._id },
+//             { soldCount: sold },
+//           ).then(() => {
+//           }).catch((err) => {
+//             console.log(err);
+//           });
+//         }
+//         // const count = result.length;
+//         const sum = result
+//           .reduce((accumulator, object) => accumulator + object.productPrice, 0);
+//         Carts.findOne({ userId: uid }).then((cartData) => {
+//           const order = new Orders({
+//             order_id: Date.now(),
+//             user_id: uid,
+//             address: adrs,
+//             order_placed_on: moment().format('DD-MM-YYYY'),
+//             products: cartData.product,
+//             totalAmount: sum,
+//             finalAmount: Math.round(sum + (sum * 0.15) + 100),
+//             paymentMethod: paymethod,
+//             expectedDelivery: moment().add(4, 'days').format('MMM Do YY'),
+//           });
+//           // eslint-disable-next-line no-unused-vars
+//           order.save().then((done) => {
+//             // eslint-disable-next-line semi, no-underscore-dangle
+//             const oid = done._id;
+//             Carts.deleteOne({ user_id: uid }).then(() => {
+//               if (paymethod === 'cod') {
+//                 console.log('payment is cod');
+//                 res.json([{ success: true, oid }]);
+//               } else if (paymethod === 'online') {
+//                 console.log('payment is online');
+//                 // const amount = done.totalAmount * 100;
+//                 const amount = done.finalAmount * 100;
+//                 const options = {
+//                   amount,
+                  
+//                   currency: 'INR',
+//                   receipt: `${oid}`,
+//                 };
+//                 instance.orders.create(options, (err, orders) => {
+//                   if (err) {
+//                     console.log(err);
+//                   } else {
+//                     res.json([{ success: false, orders }]);
+//                     // console.log(orders);
+//                   }
+//                 });
+//               }
+//             });
+//           });
+//         });
+//       });
+//   });
+// };
 
 const orderSuccess = (req, res) => {
   const customer = true;
@@ -745,11 +900,12 @@ const orderSuccess = (req, res) => {
 const getOrders = async (req, res) => {
   try {
     const customer = true;
-    const name = req.session.firstName;
+    const name = req.session.full_name;
     const uid = req.session.userid;
+    const uidobj = mongoose.Types.ObjectId(uid);
     await Orders.aggregate([
       {
-        $match: { user_id: uid },
+        $match: { user_id: uidobj },
       },
       {
         $unwind: '$products',

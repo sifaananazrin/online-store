@@ -1,146 +1,147 @@
 
 <%- include('../partials/userheader.ejs')%>
 
-        <section>
-          <div class="container py-5">
-            <form id="checkout">
-              <div class="row d-flex justify-content-center align-items-center h-100">
-                <div class="col-12 mt-5">
-                  <div class="card card-registration card-registration-2" style="border-radius: 15px">
-                    <div class="card-body p-0">
-                      <div class="row g-0 ">
-                        <div class="col-lg-8">
-                          <div class="p-5 border">
-                            <div class="d-flex justify-content-between align-items-center mb-5 ">
-                              <h1 class="fw-bold mb-0" style="color: rgb(3, 3, 58);">Order Details</h1>
-                            </div>
-                            <table id="tableForm" class="table">
-                              <thead>
-                                <tr>
+<section>
+  <div class="container py-5">
+    <form id="checkout">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-12 mt-5">
+          <div class="card card-registration card-registration-2" style="border-radius: 15px">
+            <div class="card-body p-0">
+              <div class="row g-0 ">
+                <div class="col-lg-8">
+                  <div class="p-5 border">
+                    <div class="d-flex justify-content-between align-items-center mb-5 ">
+                      <h1 class="fw-bold mb-0" style="color: rgb(3, 3, 58);">Order Details</h1>
+                    </div>
+                    <table id="tableForm" class="table">
+                      <thead>
+                        <tr>
 
-                                  <th scope="col">Product</th>
-                                  <th scope="col">Quatity</th>
-                                  <th scope="col">Cost</th>
-                                  <th scope="col">Price</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                <% allData.forEach(element=> { %>
-                                  <tr>
-                                    <td>
-                                      <%= element.productDetail.item_name %>
-                                    </td>
-                                    <td>
-                                      <%= element.productQuantity %>
-                                    </td>
-                                    <td>
-                                      <label>Rs. <%= element.productDetail.price %>
-                                    </td>
-                                    <td>
-                                      Rs. <%= element.productPrice %>
-                                    </td>
-                                  </tr>
-                                  <% }) %>
-                              </tbody>
-                            </table>
-                            <p>Shipping charge: Rs.100.00</p>
-                            <p>Tax: Rs.<%= Math.round(sum*.15) %>.00 </p>
-                            <b>Total: Rs.<%= Math.round(sum*.15) + sum + 100 %> </b>
+                          <th scope="col">Product</th>
+                          <th scope="col">Quatity</th>
+                          <th scope="col">Cost</th>
+                          <th scope="col">Price</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <% allData.forEach(element=> { %>
+                          <tr>
+                            <td>
+                              <%= element.productDetail.item_name %>
+                            </td>
+                            <td>
+                              <%= element.productQuantity %>
+                            </td>
+                            <td>
+                              <label>Rs. <%= element.productDetail.price %>
+                            </td>
+                            <td>
+                              Rs. <%= element.productPrice %>
+                            </td>
+                          </tr>
+                          <% }) %>
+                      </tbody>
+                    </table>
+                    <p>Shipping charge: Rs.100.00</p>
+                    <p>Tax: Rs.<%= Math.round(sum*.15) %>.00 </p>
+                    <b>Total: Rs.<%= Math.round(sum*.15) + sum + 100 %> </b>
 
-                            <div class="w-100 w-md-50 align-items-center mt-3" id="apply" style="display: flex;">
-                              <lable for="">Coupon:</lable>
-                              <div class="d-flex align-items-center ms-2"
-                                style="background-color: #fff;border-radius: 10px;">
-                                <input type="text" id="coupon" name="coupon" class="form-control he"
-                                  placeholder="Coupon Code" style="outline: none; border: none;border-radius: 5px;">
-                                <button class="btn btn-sm white blue he" type="button" value="button"
-                                  onclick="coup('<%= sum %>')">Apply</button>
-                              </div>
-                            </div>
-                            <div class="d-flex w-100 align-items-center mt-3" id="applied"
-                              style="display: none !important;">
-                              <lable for="">Coupon:</lable>
-                              <div class="d-flex flex-column align-items-start p-2 ms-2" id="applied"
-                                style="border: 1px solid;">
-                                <div style="font-size: 10px;"><a href="" onclick="remove('<%= sum %>')">Remove</a></div>
-                                <h6 id="coup_code">welcome50</h6>
-                                <div> discount of &nbsp;<label for="" id="per"> 50% &nbsp;</label> upto &nbsp;Rs.<label
-                                    for="" id="total">200</label></div>
-                              </div>
-                            </div>
-
-                            <!--  -->
-
-                            <div class="payment col-md-6 mt-3 d-flex justify-content-center ms-5 px-5">
-                              <h5 class="text-black">Payment:</h5>
-                              <div class="p-1 col-md-8   text-dark">
-                                <input type="radio" name="pay" value="cod" class="me-1" required checked />
-                                COD
-                              </div>
-                              <div class="p-1 col-md-8  text-dark">
-                                <input type="radio" name="pay" value="online" class="me-1"
-                                  style="background-color: rgb(3, 3, 58); " required />
-                                Pay Online
-                              </div>
-                            </div>
-
-
-
-
-                          </div>
-                        </div>
-                        <div class="col-lg-4 text-light border border-secondary"
-                          style="background-color: rgb(3, 3, 58);">
-                          <div class="p-5">
-
-                            <div class="shipadrss col-md-12 mt-3">
-                              <h5 class="text-light">Shipping Address:</h5>
-
-                              <% address.forEach(data=> { %>
-                                <div style="border: 1px solid"
-                                  class="p-4 d-flex align-content-center align-items-center d9">
-                                  <input type="radio" value="<%= data._id %>" name="address" required checked />
-                                  <p class="ms-3">
-                                    <b>
-                                      <%= name %>
-                                    </b><br />
-                                    <%= data.address %> <br>
-                                      <%= data.state %>,
-                                        <%= data.city %> <br>
-                                          <%= data.pincode %>
-                                  </p>
-                                </div>
-                                <% }) %>
-
-                                  <div class="mt-3 d-flex align-items-center d9">
-                                    <a href="/user/addAddress" class="btn btn-light">+ Add New Address</a>
-                                  </div>
-
-                            </div>
-
-
-
-                          </div>
-                        </div>
-
+                    <div class="w-100 w-md-50 align-items-center mt-3" id="apply" style="display: flex;">
+                      <lable for="">Coupon:</lable>
+                      <div class="d-flex align-items-center ms-2"
+                        style="background-color: #fff;border-radius: 10px;">
+                        <input type="text" id="coupon" name="coupon" class="form-control he"
+                          placeholder="Coupon Code" style="outline: none; border: none;border-radius: 5px;">
+                        <button class="btn btn-sm white blue he" type="button" value="button"
+                          onclick="coup('<%= sum %>')">Apply</button>
                       </div>
                     </div>
+                    <div class="d-flex w-100 align-items-center mt-3" id="applied"
+                      style="display: none !important;">
+                      <lable for="">Coupon:</lable>
+                      <div class="d-flex flex-column align-items-start p-2 ms-2" id="applied"
+                        style="border: 1px solid;">
+                        <div style="font-size: 10px;"><a href="" onclick="remove('<%= sum %>')">Remove</a></div>
+                        <h6 id="coup_code">welcome50</h6>
+                        <div> discount of &nbsp;<label for="" id="per"> 50% &nbsp;</label> upto &nbsp;Rs.<label
+                            for="" id="amount">200</label></div>
+                      </div>
+                    </div>
+
+                    <!--  -->
+
+                    <div class="payment col-md-6 mt-3 d-flex justify-content-center ms-5 px-5">
+                      <h5 class="text-black">Payment:</h5>
+                      <div class="p-1 col-md-8   text-dark">
+                        <input type="radio" name="pay" value="cod" class="me-1" required checked />
+                        COD
+                      </div>
+                      <div class="p-1 col-md-8  text-dark">
+                        <input type="radio" name="pay" value="online" class="me-1"
+                          style="background-color: rgb(3, 3, 58); " required />
+                        Pay Online
+                      </div>
+                    </div>
+
+
+
+
+                  </div>
+                </div>
+                <div class="col-lg-4 text-light border border-secondary"
+                  style="background-color: rgb(3, 3, 58);">
+                  <div class="p-5">
+
+                    <div class="shipadrss col-md-12 mt-3">
+                      <h5 class="text-light">Shipping Address:</h5>
+
+                      <% address.forEach(data=> { %>
+                        <div style="border: 1px solid"
+                          class="p-4 d-flex align-content-center align-items-center d9">
+                          <input type="radio" value="<%= data._id %>" name="address" required checked />
+                          <p class="ms-3">
+                            <b>
+                              <%= name %>
+                            </b><br />
+                            <%= data.address %> <br>
+                              <%= data.state %>,
+                                <%= data.city %> <br>
+                                  <%= data.pincode %>
+                          </p>
+                        </div>
+                        <% }) %>
+
+                          <div class="mt-3 d-flex align-items-center d9">
+                            <a href="/user/addAddress" class="btn btn-light">+ Add New Address</a>
+                          </div>
+
+                    </div>
+
+
+
                   </div>
                 </div>
 
-                <div class="payment col-md-2 mt-3 p-1">
-                  <button type="submit" class="btn btn-primary btn-lg w-100 mt-2">
-                    Confirm Order
-                  </button>
-                  <a href="/cart" class="btn btn-primary btn-lg w-100 mt-2">
-                    Go Back
-                  </a>
-                </div>
-            </form>
-
+              </div>
+            </div>
           </div>
+        </div>
 
-        </section>
+        <div class="payment col-md-2 mt-3 p-1">
+          <button type="submit" class="btn btn-primary btn-lg w-100 mt-2">
+            Confirm Order
+          </button>
+          <a href="/user/cart" class="btn btn-primary btn-lg w-100 mt-2">
+            Go Back
+          </a>
+        </div>
+    </form>
+
+  </div>
+
+</section>
+
 
 
 <%- include('../partials/userfooter.ejs') %>
