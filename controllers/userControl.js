@@ -1070,7 +1070,14 @@ const postAddToWishlist = async (req, res) => {
     const proObj = {
       productId: pid,
     };
-    const userWishlist = await Wishlists.findOne({ userId: uid });
+    // Find and update the wishlist document
+    const userWishlist = await Wishlists.findOneAndUpdate(
+      { userId: uid, "product.productId": { $ne: pid } },
+      {
+        $addToSet: { product: { $each: [proObj] } },
+      },
+      { new: true, upsert: true },
+    );
     const verify = await Carts.findOne(
       { userId: uid },
       { product: { $elemMatch: { productId: pid } } },
@@ -1078,41 +1085,14 @@ const postAddToWishlist = async (req, res) => {
     if (verify?.product?.length) {
       res.json({ cart: true });
     } else {
-      // eslint-disable-next-line no-lonely-if
-      if (userWishlist) {
-        const proExist = userWishlist.product.findIndex(
-          (product) => product.productId === pid,
-        );
-        if (proExist !== -1) {
-          res.json({ productExist: true });
-        } else {
-          Wishlists
-            .updateOne({ userId: uid }, { $push: { product: proObj } })
-            .then(() => {
-              res.json({ success: true });
-              // res.redirect('/user/home');
-              console.log('added to wishlist');
-            });
-        }
-      } else {
-        Wishlists
-          .create({
-            userId: uid,
-            product: [
-              {
-                productId: pid,
-              },
-            ],
-          })
-          .then(() => {
-            res.json({ status: true });
-          });
-      }
+      res.json({ success: true });
     }
   } catch (error) {
     res.redirect('/500');
   }
 };
+
+
 
 const postDeleteWishlist = async (req, res) => {
   try {

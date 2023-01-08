@@ -14,6 +14,7 @@ const wishlistSchema = new Schema(
         productId: {
           type: ObjectId,
           required: true,
+          unique: true,
         },
       },
     ],

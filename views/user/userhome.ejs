@@ -1,5 +1,16 @@
 <%- include('../partials/userheader.ejs')%>
 
+<style>
+	@media only screen and (max-width: 600px) {
+  .header-bg {
+    width: 100%;
+    height: auto;
+  }
+}
+
+</style>
+
+
 <div id="header-hero">
   <% banners.forEach( banner=> { %>
     <div class="header-bg  width: auto; height: 225px; max-height: 225px;"> <img src="<%= banner.image[0].url %>"" alt="header-image" /> </div>   <% }) %>
@@ -36,7 +47,7 @@
             <hr />
             <div class="c-2-image-holder"> <img class="left" src="https://images.unsplash.com/photo-1508243771214-6e95d137426b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTZ8fGZvcm1hbCUyMGphY2tldHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60" alt=""><img class="right" src="https://res.cloudinary.com/de8cuyd0n/image/upload/v1520412552/E-commerce%20landing%20page/suit-collections/collection-1-img_3x.jpg"
                  alt=""></div>
-            <p class="button">view all collections</p>
+            <a href="/user/collection"><p class="button">view all collections</p></a>
         </div>
     </div>
 </section>
@@ -1151,7 +1162,7 @@ footer .copy-right {
 	opacity: 1;
 }
 
-</style>
+</>
 
 
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
