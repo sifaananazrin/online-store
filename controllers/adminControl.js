@@ -621,6 +621,7 @@ const postAddCoupon = async (req, res) => {
         coupon_code: code,
         offer,
         max_amount: amount,
+        expiryDate: req.body.expiry_date,
         
       });
       await coupon.save();
