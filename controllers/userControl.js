@@ -22,7 +22,7 @@ var mailTransporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
     user: "shifananazrin15@gmail.com",
-    pass: "qfqpdofyccxihrxh",
+    pass: "ynudgxldjsercxjs",
   },
 });
 const OTP = `${Math.floor(1000 + Math.random() * 9000)}`;

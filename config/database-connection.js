@@ -2,7 +2,7 @@
 
 let mongoose = require('mongoose');
 
-let mongoDB = process.env.MONGO_URL;
+let mongoDB = 'mongodb+srv://shifananazrin15:0ctm8awrLcVNPqr5@cluster0.jzhivcm.mongodb.net/<your-database-name>';
 
 const connectDB = async () => {
     try {
