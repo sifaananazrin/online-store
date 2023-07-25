@@ -462,15 +462,17 @@ const getProfile = async (req, res) => {
   const { session } = req;
   let count = 0;
   const userid = session.userid;
+  console.log("Profile =>",userid);
   if (session.userid && session.account_type === 'user') {
     const customer = true;
-    await Carts.findOne({ user_id: req.session.userid }).then((doc) => {
-      if (doc) {
-        count = doc.product.length;
-      }
+    await Users.findOne({ _id: req.session.userid }).then((doc) => {
+      console.log(doc);
+      // if (doc) {
+      //   count = doc.product.length;
+      // }
     });
-    await Users.findOne({ user_id: userid }).then((userdoc) => {
-      Address.find({ user_id: userid }).then((address) => {
+    await Users.findOne({ _id: userid }).then((userdoc) => {
+      Address.find({ _id: userid }).then((address) => {
         res.render('user/profile', { user: userdoc, address, customer, count });
       }).catch(() => {
         res.redirect('/404');
