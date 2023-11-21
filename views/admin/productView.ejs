@@ -335,8 +335,12 @@ function validateBanner(form) {
                   </td>
                  
                   <td class="col-3 col-md-3 col-lg-3 col-xl-2 text-center">
-                    <img class="w-100"  src="<%= allproducts.image[0].url %>" alt="">
-                  </td>
+                    <% if (allproducts.image && allproducts.image.length > 0) { %>
+                        <img class="w-100" src="<%= allproducts.image[0].url %>" alt="">
+                    <% } else { %>
+                        <p>No image available</p>
+                    <% } %>
+                </td>
                   <td class="col-3 col-md-3 col-lg-3 col-xl-2 text-center">
                     &nbsp; <%= allproducts.dateCreated.toDateString() %>
                   </td>

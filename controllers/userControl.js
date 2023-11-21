@@ -316,6 +316,7 @@ const getAddToCart = async (req, res) => {
       });
       newCart.save().then(() => {
         // res.json({ status: true });
+        res.redirect(`/user/productDetail/${id}`);
       });
     }
   } else {
@@ -540,7 +541,7 @@ const postaddAddress = async (req, res) => {
   });
   await addressDetails.save().then((results) => {
     if (results) {
-      res.redirect('/user/checkout');
+      res.redirect('/user/profile');
     } else {
       res.json({ status: false });
     }

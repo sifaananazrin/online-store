@@ -83,34 +83,26 @@
                                                                                 <div class="p-3">
                                                                                     <div
                                                                                         class="d-flex flex-column justify-content-center">
-                                                                                        <% productData.forEach(element=>
-                                                                                            { %>
-                                                                                            <% if(data.order_id==element.order_id+''){
-                                                                                                %>
-                                                                                                <div class="d-flex justify-content-start"
-                                                                                                    style="border: 0.5px solid #d9d9d9">
-                                                                                                    <div class="px-5">
-                                                                                                        <img src="<%= element.productDetail.image[0].url %>"
-                                                                                                            alt=""
-                                                                                                            style="width: 100px; height: 100px" />
-                                                                                                    </div>
-                                                                                                    <div>
-                                                                                                        <div>
-                                                                                                            <%= element.productDetail.item_name
-                                                                                                                %>
-                                                                                                        </div>
-                                                                                                        <div>Qty: <%=
-                                                                                                                element.productQuantity
-                                                                                                                %>
-                                                                                                        </div>
-                                                                                                        <div>Price: Rs.
-                                                                                                            <%= element.productDetail.price
-                                                                                                                %>
-                                                                                                        </div>
-                                                                                                    </div>
+                                                                                        <% productData.forEach(element => { %>
+                                                                                            <% if (data.order_id == element.order_id + '') { %>
+                                                                                              <div class="d-flex justify-content-start" style="border: 0.5px solid #d9d9d9">
+                                                                                                <div class="px-5">
+                                                                                                  <% if (element.productDetail && element.productDetail.image && element.productDetail.image[0] && element.productDetail.image[0].url) { %>
+                                                                                                    <img src="<%= element.productDetail.image[0].url %>" alt="" style="width: 100px; height: 100px" />
+                                                                                                  <% } else { %>
+                                                                                                    <!-- Provide a default image or handle the absence of the image -->
+                                                                                                    <img src="/path/to/default-image.jpg" alt="Default Image" style="width: 100px; height: 100px" />
+                                                                                                  <% } %>
                                                                                                 </div>
-                                                                                                <% } %>
-                                                                                                    <% }) %>
+                                                                                                <div>
+                                                                                                  <div><%= element.productDetail && element.productDetail.item_name %></div>
+                                                                                                  <div>Qty: <%= element.productQuantity %></div>
+                                                                                                  <div>Price: Rs. <%= element.productDetail && element.productDetail.price %></div>
+                                                                                                </div>
+                                                                                              </div>
+                                                                                            <% } %>
+                                                                                          <% }) %>
+                                                                                          
                                                                                     </div>
                                                                                 </div>
                                                                             </div>

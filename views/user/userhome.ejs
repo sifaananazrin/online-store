@@ -75,15 +75,15 @@
     
       <div class="card">
        
-        <div class="card_image "><img src="<%= data.image[0].url %>"></div>
-        <div class="card_content">
-          <h2 class="card_title"><%= data.item_name%></h2>
-          <!-- <p class="card_text">Demo of pixel perfect pure CSS simple responsive card grid layout</p> -->
-		  
-          <a href="/user/productDetail/<%= data._id %>"><button class="btn card_btn">Buy Now</button></a> 
-        </div>
-      
-      </div>
+ 
+   <div class="card_image">
+	<% if (data.image && data.image[0] && data.image[0].url) { %>
+	  <img src="<%= data.image[0].url %>">
+	<% } else { %>
+	  <!-- Handle the case where data.image or data.image[0] is undefined -->
+	  <p>Image not available</p>
+	<% } %>
+  </div>
   
     </li>
     <%})%>
