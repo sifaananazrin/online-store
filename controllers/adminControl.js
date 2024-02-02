@@ -1,39 +1,33 @@
 /* eslint-disable no-console */
-const moment = require('moment');
-const Users = require('../models/signupModel');
-const Categories = require('../models/categories');
-const Products = require('../models/products');
-const Orders = require('../models/orders');
-const Coupons = require('../models/coupon');
-const Banners=require('../models/banner');
+const moment = require("moment");
+const Users = require("../models/signupModel");
+const Categories = require("../models/categories");
+const Products = require("../models/products");
+const Orders = require("../models/orders");
+const Coupons = require("../models/coupon");
+const Banners = require("../models/banner");
 
+require("dotenv/config");
 
-require('dotenv/config');
-
-
-let message = '';
-
-
+let message = "";
 
 const adminHomeRender = async (req, res) => {
   try {
-   
     const userCount = await Users.countDocuments({});
     const productCount = await Products.countDocuments({});
-    const orderData = await Orders.find({ orderStatus: { $ne: 'Cancelled' } });
+    const orderData = await Orders.find({ orderStatus: { $ne: "Cancelled" } });
     const orderCount = await Orders.countDocuments({});
-    const pendingOrder = await Orders.find({ orderStatus: 'Pending' }).count();
-    const completed = await Orders.find({ orderStatus: 'Completed' }).count();
-    const delivered = await Orders.find({ orderStatus: 'Delivered' }).count();
-    const cancelled = await Orders.find({ orderStatus: 'Cancelled' }).count();
-    const cod = await Orders.find({ paymentMethod: 'cod' }).count();
-    const online = await Orders.find({ paymentMethod: 'online' }).count();
- 
+    const pendingOrder = await Orders.find({ orderStatus: "Pending" }).count();
+    const completed = await Orders.find({ orderStatus: "Completed" }).count();
+    const delivered = await Orders.find({ orderStatus: "Delivered" }).count();
+    const cancelled = await Orders.find({ orderStatus: "Cancelled" }).count();
+    const cod = await Orders.find({ paymentMethod: "cod" }).count();
+    const online = await Orders.find({ paymentMethod: "online" }).count();
+
     const totalAmount = orderData.reduce((accumulator, object) => {
-    
       return (accumulator += object.totalAmount);
     }, 0);
-    res.render('admin/adminHome', {
+    res.render("admin/adminHome", {
       usercount: userCount,
       productcount: productCount,
       totalamount: totalAmount,
@@ -46,19 +40,17 @@ const adminHomeRender = async (req, res) => {
       online,
     });
   } catch (error) {
-    res.redirect('/500');
+    res.redirect("/500");
   }
 };
 
-
-
 const adminLoginRender = (req, res) => {
   const { session } = req;
-  if (session.userid && session.account_type === 'admin') {
-    res.redirect('/admin/home');
+  if (session.userid && session.account_type === "admin") {
+    res.redirect("/admin/home");
   } else {
-    res.render('admin/adminLogin', { message });
-    message = '';
+    res.render("admin/adminLogin", { message });
+    message = "";
   }
 };
 
@@ -68,26 +60,23 @@ const adminLoginPost = (req, res) => {
   if (req.body.email == admin && req.body.password == mypassword) {
     const { session } = req;
     session.userid = admin;
-    session.account_type = 'admin';
-    res.redirect('/admin/home');
+    session.account_type = "admin";
+    res.redirect("/admin/home");
   } else {
-    message = 'Invalid email or password';
-    res.render('admin/adminLogin', { message });
+    message = "Invalid email or password";
+    res.render("admin/adminLogin", { message });
   }
 };
-
 
 const adminUsersRender = async (req, res) => {
   const { session } = req;
-  if (session.userid && session.account_type === 'admin') {
+  if (session.userid && session.account_type === "admin") {
     const usersData = await Users.find();
-    res.render('admin/userView', { users: usersData });
+    res.render("admin/userView", { users: usersData });
   } else {
-    res.redirect('/admin/login');
+    res.redirect("/admin/login");
   }
 };
-
-
 
 const admin_edit_user = (req, res) => {
   const session = req.session;
@@ -97,7 +86,8 @@ const admin_edit_user = (req, res) => {
         const data = result;
         res.render("admin/editUser", { data });
       })
-      .catch((err) => {y
+      .catch((err) => {
+        y;
         console.log(err);
       });
   } else {
@@ -110,10 +100,9 @@ const edit_post = (req, res) => {
   const update = Users.findOneAndUpdate(
     { _id: req.params.id },
     {
-        full_name: req.body.firstName,
-       email: req.body.email,
+      full_name: req.body.firstName,
+      email: req.body.email,
       phone: req.body.phoneNumber,
-     
     }
   )
     .then((result) => {
@@ -126,11 +115,13 @@ const edit_post = (req, res) => {
     });
 };
 
-
 const blockUser = async (req, res) => {
   try {
-    await Users.updateOne({ _id: req.params.id }, { $set: { isBlock: true } }).then(() => {
-      res.redirect('/admin/users');
+    await Users.updateOne(
+      { _id: req.params.id },
+      { $set: { isBlock: true } }
+    ).then(() => {
+      res.redirect("/admin/users");
     });
   } catch (error) {
     console.log(error.message);
@@ -139,8 +130,11 @@ const blockUser = async (req, res) => {
 
 const unblockUser = async (req, res) => {
   try {
-    await Users.updateOne({ _id: req.params.id }, { $set: { isBlock: false } }).then(() => {
-      res.redirect('/admin/users');
+    await Users.updateOne(
+      { _id: req.params.id },
+      { $set: { isBlock: false } }
+    ).then(() => {
+      res.redirect("/admin/users");
     });
   } catch (error) {
     console.log(error.message);
@@ -151,80 +145,63 @@ const logout = (req, res) => {
   const { session } = req;
   session.destroy();
   // console.log('logout');
-  res.redirect('/admin/login');
+  res.redirect("/admin/login");
 };
 
 const getAdminCategory = async (req, res) => {
   const { session } = req;
-  if (session.userid && session.account_type === 'admin') {
+  if (session.userid && session.account_type === "admin") {
     try {
       const categories = await Categories.find();
-      res.render('admin/categoryView', { categories });
+      res.render("admin/categoryView", { categories });
     } catch (error) {
       console.log(error.message);
     }
   }
 };
 
-
-
 const getAddCategory = (req, res) => {
   const { session } = req;
-  if (session.userid && session.account_type === 'admin') {
-    res.render('admin/addCategory');
+  if (session.userid && session.account_type === "admin") {
+    res.render("admin/addCategory");
   } else {
-    res.redirect('/admin/login');
+    res.redirect("/admin/login");
   }
 };
 
 const postAddCategory = async (req, res) => {
-  
   try {
-   console.log(req.body)
-   const category = await Categories.findOne({ name: req.body.cat });
+    console.log(req.body);
+    const category = await Categories.findOne({ name: req.body.cat });
 
-   if (category) {
-
-    res.redirect("/admin/addCategory");
-    
-
-   }else{
-
-   
-    var categories = new Categories({
-      name: req.body.cat,
-      description: req.body.des,
-  
-    
-    
-     
-    });
-   
-  }
-  var Data = await categories.save();
-    if (Data){
-      res.redirect('/admin/adminCategory');
+    if (category) {
+      res.redirect("/admin/addCategory");
     } else {
-      res.render('admin/addCategory');
+      var categories = new Categories({
+        name: req.body.cat,
+        description: req.body.des,
+      });
+    }
+    var Data = await categories.save();
+    if (Data) {
+      res.redirect("/admin/adminCategory");
+    } else {
+      res.render("admin/addCategory");
     }
   } catch (error) {
     console.log(error.message);
   }
 };
-  
-  
-  
- 
 
 const getEditCategory = async (req, res) => {
   const { session } = req;
-  if (session.userid && session.account_type === 'admin') {
+  if (session.userid && session.account_type === "admin") {
     const { id } = req.params;
     console.log(id);
     const categories = await Categories.findOne({ _id: id });
-    res.render('admin/editCategory', { categoriesData: categories });
+    res.render("admin/editCategory", { categoriesData: categories });
   } else {
-    res.redirect('/admin/login');
+    res.redirect("/admin/login");
   }
 };
 
@@ -232,14 +209,17 @@ const postEditCategory = async (req, res) => {
   try {
     const { id } = req.params;
     console.log(req.params.id);
-    const categoriesData = await Categories.updateOne({ _id: id }, {
-      name: req.body.cat,
-      description: req.body.des,
-    });
+    const categoriesData = await Categories.updateOne(
+      { _id: id },
+      {
+        name: req.body.cat,
+        description: req.body.des,
+      }
+    );
     if (categoriesData) {
-      res.redirect('/admin/adminCategory');
+      res.redirect("/admin/adminCategory");
     } else {
-      res.render('admin/editCategory');
+      res.render("admin/editCategory");
     }
   } catch (error) {
     console.log(error.message);
@@ -251,7 +231,7 @@ const getDeleteCategory = async (req, res) => {
     const { id } = req.params;
     console.log(id);
     await Categories.deleteOne({ _id: id }).then(() => {
-      res.redirect('/admin/adminCategory');
+      res.redirect("/admin/adminCategory");
     });
   } catch (error) {
     console.log(error.message);
@@ -260,22 +240,22 @@ const getDeleteCategory = async (req, res) => {
 
 const getAdminProducts = async (req, res) => {
   const { session } = req;
-  if (session.userid && session.account_type === 'admin') {
+  if (session.userid && session.account_type === "admin") {
     const productsData = await Products.find();
-    res.render('admin/productView', { products: productsData });
+    res.render("admin/productView", { products: productsData });
   } else {
-    res.redirect('/admin/login');
+    res.redirect("/admin/login");
   }
 };
 
 const getAddProduct = async (req, res) => {
   const { session } = req;
-  if (session.userid && session.account_type === 'admin') {
+  if (session.userid && session.account_type === "admin") {
     const categories = await Categories.find();
     // console.log(categories);
-    res.render('admin/addProduct', { categories });
+    res.render("admin/addProduct", { categories });
   } else {
-    res.redirect('/admin/login');
+    res.redirect("/admin/login");
   }
 };
 
@@ -283,37 +263,34 @@ const postAddProduct = async (req, res) => {
   try {
     // const IMAGE_PATH = (req.file.path).slice(7)
 
-    
     const products = new Products({
-      item_name : req.body.item_name,
-      des : req.body.des,
+      item_name: req.body.item_name,
+      des: req.body.des,
       price: req.body.price,
       category: req.body.category,
-      stock:req.body.stock,
+      stock: req.body.stock,
       soldCount: 10,
       discount: true,
       // image:IMAGE_PATH,
-      
-     
     });
-    products.image = req.files.map((f) => ({ url: f.path, filename: f.filename }));
+    products.image = req.files.map((f) => ({
+      url: f.path,
+      filename: f.filename,
+    }));
     const productsData = await products.save();
-    if (productsData){
-      res.redirect('/admin/products');
+    if (productsData) {
+      res.redirect("/admin/products");
     } else {
-      res.render('admin/addProduct');
+      res.render("admin/addProduct");
     }
   } catch (error) {
     console.log(error.message);
   }
 };
 
-
-
-
 const getEditProduct = (req, res) => {
   const session = req.session;
-  
+
   if (session.userid && session.account_type == "admin") {
     const finding = Products.find({ _id: req.params.id })
       .then((result) => {
@@ -335,14 +312,13 @@ const postEditProduct = (req, res) => {
   const update = Products.findOneAndUpdate(
     { _id: req.params.id },
     {
-      item_name : req.body.item_name,
-      des : req.body.des,
+      item_name: req.body.item_name,
+      des: req.body.des,
       price: req.body.price,
       category: req.body.cat,
-      stock:req.body.qty,
+      stock: req.body.qty,
       soldCount: 10,
-       image:image,
-     
+      image: image,
     }
   )
     .then((result) => {
@@ -355,11 +331,13 @@ const postEditProduct = (req, res) => {
     });
 };
 
-
 const blockproduct = async (req, res) => {
   try {
-    await Products.updateOne({ _id: req.params.id }, { $set: { isDeleted: true } }).then(() => {
-      res.redirect('/admin/products');
+    await Products.updateOne(
+      { _id: req.params.id },
+      { $set: { isDeleted: true } }
+    ).then(() => {
+      res.redirect("/admin/products");
     });
   } catch (error) {
     console.log(error.message);
@@ -368,68 +346,67 @@ const blockproduct = async (req, res) => {
 
 const unblockproduct = async (req, res) => {
   try {
-    await Products.updateOne({ _id: req.params.id }, { $set: { isDeleted: false } }).then(() => {
-      res.redirect('/admin/products');
+    await Products.updateOne(
+      { _id: req.params.id },
+      { $set: { isDeleted: false } }
+    ).then(() => {
+      res.redirect("/admin/products");
     });
   } catch (error) {
     console.log(error.message);
   }
 };
-
-
 
 const getDeleteProduct = async (req, res) => {
   try {
     const { id } = req.params;
     console.log(id);
     await Products.deleteOne({ _id: id }).then(() => {
-      res.redirect('/admin/products');
+      res.redirect("/admin/products");
     });
   } catch (error) {
     console.log(error.message);
   }
 };
 
-
 const getOrders = (req, res) => {
   try {
     Orders.aggregate([
       {
         $lookup: {
-          from: 'products',
-          localField: 'products.productId',
-          foreignField: '_id',
-          as: 'product',
+          from: "products",
+          localField: "products.productId",
+          foreignField: "_id",
+          as: "product",
         },
       },
       {
         $lookup: {
-          from: 'logins',
-          localField: 'user_id',
-          foreignField: '_id',
-          as: 'userfields',
+          from: "logins",
+          localField: "user_id",
+          foreignField: "_id",
+          as: "userfields",
         },
       },
       {
         $lookup: {
-          from: 'addresses',
-          localField: 'address',
-          foreignField: '_id',
-          as: 'userAddress',
+          from: "addresses",
+          localField: "address",
+          foreignField: "_id",
+          as: "userAddress",
         },
       },
       {
-        $unwind: '$userfields',
+        $unwind: "$userfields",
       },
     ]).then((result) => {
       console.log(result);
-      res.render('admin/orders', { allData: result });
+      res.render("admin/orders", { allData: result });
     });
   } catch (error) {
-    res.redirect('/500');
+    res.redirect("/500");
   }
 };
-
 
 const changeOrderStatus = (req, res) => {
   try {
@@ -437,29 +414,31 @@ const changeOrderStatus = (req, res) => {
     Orders.updateOne(
       { _id: orderID },
       {
-        paymentStatus, orderStatus,
-      },
-    ).then(() => {
-      res.send('success');
-    }).catch(() => {
-      res.redirect('/500');
-    });
+        paymentStatus,
+        orderStatus,
+      }
+    )
+      .then(() => {
+        res.send("success");
+      })
+      .catch(() => {
+        res.redirect("/500");
+      });
   } catch (error) {
-    res.redirect('/500');
+    res.redirect("/500");
   }
 };
 
 const orderCompeleted = (req, res) => {
   try {
     const { orderID } = req.body;
-    Orders.updateOne(
-      { _id: orderID },
-      { orderStatus: 'Completed' },
-    ).then(() => {
-      res.send('done');
-    });
+    Orders.updateOne({ _id: orderID }, { orderStatus: "Completed" }).then(
+      () => {
+        res.send("done");
+      }
+    );
   } catch (error) {
-    res.redirect('/500');
+    res.redirect("/500");
   }
 };
 
@@ -468,24 +447,23 @@ const orderCancel = (req, res) => {
     const { orderID } = req.body;
     Orders.updateOne(
       { _id: orderID },
-      { orderStatus: 'Cancelled', paymentStatus: 'Cancelled' },
+      { orderStatus: "Cancelled", paymentStatus: "Cancelled" }
     ).then(() => {
-      res.send('done');
+      res.send("done");
     });
   } catch (error) {
-    res.redirect('/500');
+    res.redirect("/500");
   }
 };
 
-
 const getSalesReport = async (req, res) => {
   try {
-    const today = moment().startOf('day');
-    const endtoday = moment().endOf('day');
-    const monthstart = moment().startOf('month');
-    const monthend = moment().endOf('month');
-    const yearstart = moment().startOf('year');
-    const yearend = moment().endOf('year');
+    const today = moment().startOf("day");
+    const endtoday = moment().endOf("day");
+    const monthstart = moment().startOf("month");
+    const monthend = moment().endOf("month");
+    const yearstart = moment().startOf("year");
+    const yearend = moment().endOf("year");
     const daliyReport = await Orders.aggregate([
       {
         $match: {
@@ -496,13 +474,12 @@ const getSalesReport = async (req, res) => {
         },
       },
       {
-        $lookup:
-              {
-                from: 'logins',
-                localField: 'user_id',
-                foreignField: '_id',
-                as: 'user',
-              },
+        $lookup: {
+          from: "logins",
+          localField: "user_id",
+          foreignField: "_id",
+          as: "user",
+        },
       },
 
       {
@@ -515,7 +492,7 @@ const getSalesReport = async (req, res) => {
         },
       },
       {
-        $unwind: '$user',
+        $unwind: "$user",
       },
     ]);
     console.log(daliyReport);
@@ -529,13 +506,12 @@ const getSalesReport = async (req, res) => {
         },
       },
       {
-        $lookup:
-              {
-                from: 'logins',
-                localField: 'user_id',
-                foreignField: '_id',
-                as: 'user',
-              },
+        $lookup: {
+          from: "logins",
+          localField: "user_id",
+          foreignField: "_id",
+          as: "user",
+        },
       },
 
       {
@@ -548,7 +524,7 @@ const getSalesReport = async (req, res) => {
         },
       },
       {
-        $unwind: '$user',
+        $unwind: "$user",
       },
     ]);
     const yearReport = await Orders.aggregate([
@@ -561,13 +537,12 @@ const getSalesReport = async (req, res) => {
         },
       },
       {
-        $lookup:
-              {
-                from: 'logins',
-                localField: 'user_id',
-                foreignField: '_id',
-                as: 'user',
-              },
+        $lookup: {
+          from: "logins",
+          localField: "user_id",
+          foreignField: "_id",
+          as: "user",
+        },
       },
       {
         $project: {
@@ -579,31 +554,34 @@ const getSalesReport = async (req, res) => {
         },
       },
       {
-        $unwind: '$user',
+        $unwind: "$user",
       },
     ]);
-    res.render('admin/salesReport', { today: daliyReport, month: monthReport, year: yearReport });
+    res.render("admin/salesReport", {
+      today: daliyReport,
+      month: monthReport,
+      year: yearReport,
+    });
   } catch (error) {
-    res.redirect('/500');
+    res.redirect("/500");
   }
 };
-
 
 const getCoupon = async (req, res) => {
   try {
     const coupons = await Coupons.find();
-    res.render('admin/coupon', { allData: coupons });
+    res.render("admin/coupon", { allData: coupons });
   } catch (error) {
-    res.redirect('/500');
+    res.redirect("/500");
   }
 };
 
 const getAddCoupon = (req, res) => {
   try {
-    res.render('admin/addCoupon');
+    res.render("admin/addCoupon");
   } catch (error) {
     console.log(error);
-    res.redirect('/500');
+    res.redirect("/500");
   }
 };
 
@@ -612,23 +590,20 @@ const postAddCoupon = async (req, res) => {
     const { code, offer, amount } = req.body;
     const already = await Coupons.find({ coupon_code: code });
     if (already.length !== 0) {
-      
-      res.redirect('/admin/addCoupon');
+      res.redirect("/admin/addCoupon");
     } else {
-    
       const Coupon = Coupons;
       const coupon = new Coupon({
         coupon_code: code,
         offer,
         max_amount: amount,
         expiryDate: req.body.expiry_date,
-        
       });
       await coupon.save();
-      res.redirect('/admin/coupon');
+      res.redirect("/admin/coupon");
     }
   } catch (error) {
-    res.redirect('/500');
+    res.redirect("/500");
   }
 };
 
@@ -636,25 +611,26 @@ const getDeleteCoupon = (req, res) => {
   try {
     Coupons.findOneAndDelete({ _id: req.params.id })
       .then(() => {
-        res.redirect('/admin/coupon');
-      }).catch(() => {
-        res.redirect('/500');
+        res.redirect("/admin/coupon");
+      })
+      .catch(() => {
+        res.redirect("/500");
       });
   } catch (error) {
-    res.redirect('/500');
+    res.redirect("/500");
   }
 };
 const getBanner = async (req, res) => {
   try {
     const banner = await Banners.find();
-    res.render('admin/banner', { banner });
+    res.render("admin/banner", { banner });
   } catch (error) {
-    res.redirect('/500');
+    res.redirect("/500");
   }
 };
 
 const getAddBanner = (req, res) => {
-  res.render('admin/addBanner');
+  res.render("admin/addBanner");
 };
 
 const postAddBanner = async (req, res) => {
@@ -665,33 +641,32 @@ const postAddBanner = async (req, res) => {
       description: req.body.des,
       // image:IMAGE_PATH,
     });
-    Banner.image = req.files.map((f) => ({ url: f.path, filename: f.filename }));
-      const bannerData = await Banner.save();
+    Banner.image = req.files.map((f) => ({
+      url: f.path,
+      filename: f.filename,
+    }));
+    const bannerData = await Banner.save();
     if (bannerData) {
-      res.redirect('/admin/banner');
+      res.redirect("/admin/banner");
     } else {
-      res.render('admin/addBanner');
+      res.render("admin/addBanner");
     }
   } catch (error) {
     console.log(error.message);
   }
 };
 
-
-
 const getDeleteBanner = async (req, res) => {
   try {
     const { id } = req.params;
     console.log(id);
     await Banners.deleteOne({ _id: id }).then(() => {
-      res.redirect('/admin/banner');
+      res.redirect("/admin/banner");
     });
   } catch (error) {
     console.log(error.message);
   }
 };
-
-
 
 module.exports = {
   adminHomeRender,
